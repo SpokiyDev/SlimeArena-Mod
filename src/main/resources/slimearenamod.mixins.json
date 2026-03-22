@@ -1,14 +1,18 @@
 {
-	"required": true,
-	"package": "com.spokiy.slimearenamod.mixin",
-	"compatibilityLevel": "JAVA_21",
-	"mixins": [
-		"ExampleMixin"
-	],
-	"injectors": {
-		"defaultRequire": 1
-	},
-	"overwrites": {
-		"requireAnnotations": true
-	}
+  "required": true,
+  "package": "com.spokiy.slimearenamod.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  },
+  "mixins": [
+    "LivingEntityMixin"
+  ],
+  "client": [
+    "InGameHudMixin",
+    "PlayerEntityRendererMixin"
+  ]
 }

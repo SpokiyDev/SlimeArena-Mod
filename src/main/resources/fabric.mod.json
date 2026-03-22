@@ -5,11 +5,11 @@
 	"name": "SlimeArena Mod",
 	"description": "Mod for the SlimeArena Server!",
 	"authors": [
-		"Me!"
+		"SpokiyDev"
 	],
 	"contact": {
 		"homepage": "https://fabricmc.net/",
-		"sources": "https://https://github.com/SpokiyDev/SlimeArenaMod"
+		"sources": "https://https://github.com/SpokiyDev/SlimeArena-Mod"
 	},
 	"license": "CC0-1.0",
 	"icon": "assets/slimearenamod/icon.png",
@@ -23,6 +23,14 @@
 		],
 		"client": [
 			"com.spokiy.slimearenamod.SlimeArenaModClient"
+		],
+		"cardinal-components": [
+			"com.spokiy.slimearenamod.component.SAEntityComponents"
+		]
+	},
+	"custom": {
+		"cardinal-components": [
+			"slimearenamod:player_data"
 		]
 	},
 	"mixins": [
