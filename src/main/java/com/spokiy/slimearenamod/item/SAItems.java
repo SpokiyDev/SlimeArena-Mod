@@ -7,9 +7,13 @@ import net.minecraft.item.ItemGroups;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Rarity;
 
 public class SAItems {
-    public static final Item MY_ITEM = registerItem("my_item", new Item(new Item.Settings()));
+    public static final Item VACCINE = registerItem("vaccine",
+            new VaccineItem(new Item.Settings().rarity(Rarity.UNCOMMON)));
+    public static final Item DRIVABLE_MINECART = registerItem("drivable_minecart",
+            new DrivableMinecartItem(new Item.Settings().maxCount(1).rarity(Rarity.EPIC)));
 
 
     public static Item registerItem(String name, Item item) {
@@ -17,10 +21,11 @@ public class SAItems {
     }
 
     public static void register() {
-        SlimeArenaMod.LOGGER.info("Registering Mod Items for" + SlimeArenaMod.MOD_ID);
+        SlimeArenaMod.LOGGER.info("Registering Mod Items for " + SlimeArenaMod.MOD_ID);
 
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS).register(entries -> {
-            entries.add(MY_ITEM);
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT).register(entries -> {
+            entries.add(VACCINE);
+            entries.add(DRIVABLE_MINECART);
         });
 
     }

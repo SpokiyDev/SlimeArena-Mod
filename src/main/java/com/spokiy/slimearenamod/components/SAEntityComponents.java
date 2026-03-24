@@ -1,4 +1,4 @@
-package com.spokiy.slimearenamod.component;
+package com.spokiy.slimearenamod.components;
 
 import org.ladysnake.cca.api.v3.entity.EntityComponentFactoryRegistry;
 import org.ladysnake.cca.api.v3.entity.EntityComponentInitializer;

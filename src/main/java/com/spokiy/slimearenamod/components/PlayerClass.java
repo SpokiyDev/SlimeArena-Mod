@@ -1,15 +1,12 @@
-package com.spokiy.slimearenamod.enums;
-
-import java.util.List;
+package com.spokiy.slimearenamod.components;
 
 public enum PlayerClass {
     NONE,
-
-    // Human
     HUMAN,
-    BOY,
 
     // Slime
     SLIME,
+    SPRINTER,
+    HUNTER,
     SUPPORT
 }

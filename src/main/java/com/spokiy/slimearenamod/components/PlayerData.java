@@ -1,8 +1,7 @@
-package com.spokiy.slimearenamod.component;
+package com.spokiy.slimearenamod.components;
 
-import com.spokiy.slimearenamod.enums.PlayerClass;
-import com.spokiy.slimearenamod.enums.PlayerTeam;
 import com.spokiy.slimearenamod.util.SAAbilities;
+import com.spokiy.slimearenamod.util.Util;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
 import org.ladysnake.cca.api.v3.component.Component;
@@ -13,12 +12,23 @@ public class PlayerData implements Component, AutoSyncedComponent {
     private PlayerTeam playerTeam = PlayerTeam.NONE;
     private PlayerClass playerClass = PlayerClass.NONE;
 
+    // Player Team
     public PlayerTeam getPlayerTeam() { return playerTeam; }
-    public void setPlayerTeam(PlayerTeam value) { this.playerTeam = value; }
 
+    // Player Class
     public PlayerClass getPlayerClass() { return playerClass; }
-    public void setPlayerClass(PlayerClass value) { this.playerClass = value; }
+    public void setPlayerClass(PlayerClass value) {
+        this.playerClass = value;
+        this.playerTeam = getPlayerTeamByClass(value);
+        this.abilityCooldown = 0;
+    }
+    private PlayerTeam getPlayerTeamByClass(PlayerClass value) {
+        if (Util.HUMAN_CLASSES.contains(value)) return PlayerTeam.HUMAN;
+        else if (Util.SLIME_CLASSES.contains(value)) return PlayerTeam.SLIME;
+        return PlayerTeam.NONE;
+    }
 
+    // Ability Cooldown
     public int getCooldown(long currentTime) { return (int)Math.max(0, abilityCooldown - currentTime); }
     public void setCooldown(long currentTime, int duration) { this.abilityCooldown = currentTime + duration; }
     public boolean isOnCooldown(long currentTime) { return abilityCooldown > currentTime; }

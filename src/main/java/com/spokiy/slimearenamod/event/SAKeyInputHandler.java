@@ -1,6 +1,6 @@
 package com.spokiy.slimearenamod.event;
 
-import com.spokiy.slimearenamod.networking.SAC2SPayload;
+import com.spokiy.slimearenamod.networking.packet.KeyPressPayload;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -22,7 +22,7 @@ public class SAKeyInputHandler {
 
                 if (client.player == null) return;
 
-                ClientPlayNetworking.send(new SAC2SPayload(client.player.getBlockPos()));
+                ClientPlayNetworking.send(new KeyPressPayload(client.player.getBlockPos()));
             }
         });
     }

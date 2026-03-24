@@ -1,0 +1,88 @@
+package com.spokiy.slimearenamod.entity.projectile;
+
+import com.spokiy.slimearenamod.entity.SAEntities;
+import com.spokiy.slimearenamod.util.Util;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityStatuses;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.particle.ItemStackParticleEffect;
+import net.minecraft.particle.ParticleEffect;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.text.Text;
+import net.minecraft.util.hit.EntityHitResult;
+import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
+
+public class SlimeBallEntity extends ThrownItemEntity {
+
+    public SlimeBallEntity(EntityType<? extends SlimeBallEntity> entityType, World world) {
+        super(entityType, world);
+    }
+
+    public SlimeBallEntity(World world, LivingEntity owner) {
+        super(SAEntities.SLIME_BALL, owner, world);
+    }
+
+    public SlimeBallEntity(World world, double x, double y, double z) {
+        super(SAEntities.SLIME_BALL, x, y, z, world);
+    }
+
+
+    @Override
+    protected Item getDefaultItem() {
+        return Items.SLIME_BALL;
+    }
+
+    private ParticleEffect getParticleParameters() {
+        ItemStack itemStack = this.getStack();
+        return !itemStack.isEmpty() && !itemStack.isOf(this.getDefaultItem())
+                ? new ItemStackParticleEffect(ParticleTypes.ITEM, itemStack)
+                : ParticleTypes.ITEM_SLIME;
+    }
+
+    @Override
+    public void handleStatus(byte status) {
+        if (status == EntityStatuses.PLAY_DEATH_SOUND_OR_ADD_PROJECTILE_HIT_PARTICLES) {
+            ParticleEffect particleEffect = this.getParticleParameters();
+
+            for (int i = 0; i < 8; i++) {
+                this.getWorld().addParticle(particleEffect, this.getX(), this.getY(), this.getZ(), 0.0, 0.0, 0.0);
+            }
+        }
+    }
+
+    @Override
+    protected void onEntityHit(EntityHitResult entityHitResult) {
+        super.onEntityHit(entityHitResult);
+        Entity entity = entityHitResult.getEntity();
+
+        Vec3d hitPos = this.getPos();
+        Vec3d center = entity.getBoundingBox().getCenter();
+        MinecraftClient.getInstance().player.sendMessage(Text.of("x: " + hitPos.x + " y: " + hitPos.y + " z: " + hitPos.z), false);
+        MinecraftClient.getInstance().player.sendMessage(Text.of("x: " + center.x + " y: " + center.y + " z: " + center.z), false);
+        Vec3d knockDir = center.subtract(hitPos).normalize();
+
+        double strength = Util.SLIME_BALL_KNOCKBACK_STRENGTH;
+
+        entity.addVelocity(knockDir.x * strength, knockDir.y * strength, knockDir.z * strength);
+        entity.velocityModified = true;
+    }
+
+    @Override
+    protected void onCollision(HitResult hitResult) {
+        super.onCollision(hitResult);
+        if (!this.getWorld().isClient) {
+            this.getWorld().sendEntityStatus(this, EntityStatuses.PLAY_DEATH_SOUND_OR_ADD_PROJECTILE_HIT_PARTICLES);
+            this.discard();
+        }
+    }
+}

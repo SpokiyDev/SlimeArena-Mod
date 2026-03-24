@@ -1,9 +1,34 @@
 {
-  "item.slimearenamod.my_item": "My Item",
+  "item.slimearenamod.vaccine": "Vaccine",
+  "item.slimearenamod.vaccine.lore": "smth",
+  "item.slimearenamod.potion.speed": "Potion of Speed",
+  "item.slimearenamod.potion.jump_boost": "Potion of Jump Boost",
+  "item.slimearenamod.potion.invisibility": "Potion of Invisibility",
+  "item.slimearenamod.potion.invisibility.lore": "Full invisibility",
+  "item.slimearenamod.potion.slow_falling": "Potion of Slow Falling",
+  "item.slimearenamod.potion.slowness": "Splash Potion of Slowness",
 
   "key.slimearenamod.category": "Slime Arena",
   "key.slimearenamod.ability": "Use Ability",
 
-  "message.slimearenamod.caught_by_slimes": "The slimes caught you.."
+  "message.slimearenamod.infected_message": "The slimes caught you!",
+  "message.slimearenamod.cured_message": "You are human again!",
+
+  "shop.slimearenamod.shop_label": "Shop",
+  "shop.slimearenamod.not_enough_money": "Not enough emeralds",
+  "shop.slimearenamod.no_item_to_sell": "You don't have this item",
+  "shop.slimearenamod.sell_all": "Sell all",
+  "shop.slimearenamod.no_items_to_sell": "You don't have anything to sell",
+  "shop.slimearenamod.left_click_to_buy": "Left Click to buy",
+  "shop.slimearenamod.right_click_to_sell": "Right Click to sell",
+
+  "class.slimearenamod.human": "[HUMAN] ",
+  "class.slimearenamod.boy": "[BOY] ",
+  "class.slimearenamod.medic": "[MEDIC] ",
+
+  "class.slimearenamod.slime": "[SLIME] ",
+  "class.slimearenamod.sprinter": "[SPRINTER] ",
+  "class.slimearenamod.hunter": "[HUNTER] ",
+  "class.slimearenamod.support": "[SUPPORT] "
 
 }

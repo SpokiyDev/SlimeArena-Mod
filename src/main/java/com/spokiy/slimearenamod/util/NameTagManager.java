@@ -1,6 +1,6 @@
 package com.spokiy.slimearenamod.util;
 
-import com.spokiy.slimearenamod.enums.PlayerClass;
+import com.spokiy.slimearenamod.components.PlayerClass;
 import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.server.MinecraftServer;
@@ -11,13 +11,14 @@ import net.minecraft.util.Formatting;
 import java.util.Map;
 
 public class NameTagManager {
-    private static final Map<String, Formatting> COLORS = Map.of(
+    private static final Map<PlayerClass, Formatting> COLORS = Map.of(
             // Human
-            "human", Formatting.YELLOW,
-            "boy", Formatting.YELLOW,
+            PlayerClass.HUMAN, Formatting.YELLOW,
             // Slime
-            "slime", Formatting.GREEN,
-            "support", Formatting.AQUA
+            PlayerClass.SLIME, Formatting.GREEN,
+            PlayerClass.SPRINTER, Formatting.AQUA,
+            PlayerClass.HUNTER, Formatting.RED,
+            PlayerClass.SUPPORT, Formatting.YELLOW
     );
 
     public static void updatePlayerScoreboardTeam(ServerPlayerEntity player, PlayerClass playerClass) {
@@ -25,19 +26,19 @@ public class NameTagManager {
         if (server == null) return;
         Scoreboard scoreboard = server.getScoreboard();
 
-        String teamName = playerClass.name().toUpperCase();
+        String teamName = playerClass.name().toLowerCase();
         Team team = scoreboard.getTeam(teamName);
 
         if (team == null) {
             team = scoreboard.addTeam(teamName);
 
-            team.setPrefix(Text.literal("[" + teamName + "] "));
+            team.setPrefix(Text.translatable("class.slimearenamod." + teamName));
 
-            // Set color
-            Formatting color = COLORS.get(playerClass.name().toLowerCase());
-            if (color == null) color = Formatting.WHITE;
-            team.setColor(color);
         }
+        // Set color
+        Formatting color = COLORS.get(playerClass);
+        if (color == null) color = Formatting.WHITE;
+        team.setColor(color);
 
         scoreboard.addScoreHolderToTeam(player.getName().getString(), team);
     }

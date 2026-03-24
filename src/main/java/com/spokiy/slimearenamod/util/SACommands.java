@@ -1,15 +1,16 @@
-package com.spokiy.slimearenamod.commands;
+package com.spokiy.slimearenamod.util;
 
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
-import com.spokiy.slimearenamod.enums.PlayerClass;
-import com.spokiy.slimearenamod.enums.PlayerTeam;
-import com.spokiy.slimearenamod.util.Util;
+import com.spokiy.slimearenamod.components.PlayerClass;
+import com.spokiy.slimearenamod.util.shop.ShopMenu;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.math.Vec3d;
 
 import java.util.Collection;
 
@@ -45,27 +46,15 @@ public class SACommands {
                                                         return 0;
                                                     }
 
-                                                    PlayerTeam playerTeam = PlayerTeam.NONE;
-                                                    if (Util.HUMAN_CLASSES.contains(playerClass)) {
-                                                        playerTeam = PlayerTeam.HUMAN;
-                                                    } else if (Util.SLIME_CLASSES.contains(playerClass)) {
-                                                        playerTeam = PlayerTeam.SLIME;
-                                                    }
 
                                                     for (ServerPlayerEntity target : players) {
-
                                                         Util.changePlayerClass(target, playerClass);
-                                                        Util.changePlayerTeam(target, playerTeam);
 
                                                         target.sendMessage(
                                                                 Text.literal("Your class: " + playerClass.name()),
                                                                 false
                                                         );
 
-                                                        target.sendMessage(
-                                                                Text.literal("Your team: " + playerTeam.name()),
-                                                                false
-                                                        );
                                                     }
 
                                                     return 1;
@@ -73,6 +62,45 @@ public class SACommands {
                                         )
                                 )
                         )
+        );
+
+        dispatcher.register(CommandManager.literal("shop")
+                        .then(CommandManager.argument("target", EntityArgumentType.player())
+                            .executes(context -> {
+                                ServerPlayerEntity player = context.getSource().getPlayer();
+                                if (player == null) return 0;
+
+                                ShopMenu.open(player);
+
+                                return 1;
+                            }))
+        );
+
+        dispatcher.register(CommandManager.literal("push")
+                .then(CommandManager.argument("target", EntityArgumentType.player())
+                        .then(CommandManager.argument("x", DoubleArgumentType.doubleArg())
+                                .then(CommandManager.argument("y", DoubleArgumentType.doubleArg())
+                                        .then(CommandManager.argument("z", DoubleArgumentType.doubleArg())
+                                                .executes(context -> {
+                                                    ServerPlayerEntity target = EntityArgumentType.getPlayer(context, "target");
+                                                    double x = DoubleArgumentType.getDouble(context, "x");
+                                                    double y = DoubleArgumentType.getDouble(context, "y");
+                                                    double z = DoubleArgumentType.getDouble(context, "z");
+
+                                                    target.setVelocity(new Vec3d(x, y, z));
+                                                    target.velocityModified = true;
+
+                                                    context.getSource().sendMessage(
+                                                            Text.literal("Pushed " + target.getName().getString() +
+                                                                    " with vector (" + x + ", " + y + ", " + z + ")")
+                                                    );
+
+                                                    return 1;
+                                                })
+                                        )
+                                )
+                        )
+                )
         );
     }
 }

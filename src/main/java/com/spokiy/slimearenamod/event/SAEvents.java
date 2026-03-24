@@ -1,27 +1,29 @@
 package com.spokiy.slimearenamod.event;
 
-import com.spokiy.slimearenamod.component.PlayerData;
-import com.spokiy.slimearenamod.component.SAComponents;
-import com.spokiy.slimearenamod.enums.PlayerClass;
-import com.spokiy.slimearenamod.enums.PlayerTeam;
+import com.spokiy.slimearenamod.components.PlayerData;
+import com.spokiy.slimearenamod.components.SAComponents;
+import com.spokiy.slimearenamod.components.PlayerClass;
+import com.spokiy.slimearenamod.components.PlayerTeam;
+import com.spokiy.slimearenamod.item.VaccineItem;
 import com.spokiy.slimearenamod.util.Util;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.minecraft.block.Blocks;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.Vec3d;
+
+import java.util.Objects;
 
 public class SAEvents {
     static int tickCounter = 0;
@@ -45,12 +47,21 @@ public class SAEvents {
                 PlayerTeam targetTeam = targetData.getPlayerTeam();
                 PlayerClass targetClass = targetData.getPlayerClass();
 
-                if (attackerTeam == PlayerTeam.SLIME && targetTeam == PlayerTeam.HUMAN) {
+                // Team change on hit
+                ItemStack stack = attacker.getMainHandStack();
+                if (stack.getItem() instanceof VaccineItem && targetTeam == PlayerTeam.SLIME) {
+                    stack.setCount(stack.getCount() - 1);
+
+                    Util.curePlayer(target, targetData);
+                    attacker.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 1, Util.randomRange(attacker.getRandom(), 0.8f, 1.0f));
+                    target.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 1, Util.randomRange(target.getRandom(), 0.8f, 1.0f));
+
+                    return ActionResult.FAIL;
+                }
+                else if (attackerTeam == PlayerTeam.SLIME && targetTeam == PlayerTeam.HUMAN) {
                     Util.infectPlayer(target, targetData);
-                    attacker.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP,
-                            1, Util.randomRange(attacker.getRandom(), 0.8f, 1.0f));
-                    target.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP,
-                            1, Util.randomRange(target.getRandom(), 0.8f, 1.0f));
+                    attacker.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 1, Util.randomRange(attacker.getRandom(), 0.8f, 1.0f));
+                    target.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 1, Util.randomRange(target.getRandom(), 0.8f, 1.0f));
 
                     Vec3d pos = target.getBoundingBox().getCenter();
                     serverWorld.spawnParticles(
@@ -63,12 +74,21 @@ public class SAEvents {
 
                     return ActionResult.FAIL;
                 }
+
+                // Hit abilities
                 else if (attackerClass == PlayerClass.SUPPORT && targetTeam == PlayerTeam.SLIME) {
-                    target.addStatusEffect(new StatusEffectInstance(
-                            StatusEffects.SPEED, 20 * 6, 2,
+                    int speedAmplifier = target.hasStatusEffect(StatusEffects.SPEED) ?
+                            Objects.requireNonNull(target.getStatusEffect(StatusEffects.SPEED)).getAmplifier() : -1;
+                    int jumpAmplifier = target.hasStatusEffect(StatusEffects.JUMP_BOOST) ?
+                            Objects.requireNonNull(target.getStatusEffect(StatusEffects.JUMP_BOOST)).getAmplifier() : -1;
+
+                    target.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED,
+                            20 * Util.SUPPORT_EFFECT_DURATION,
+                            Math.min(speedAmplifier + 1, Util.SUPPORT_MAX_SPEED_AMPLIFIER),
                             true, true, true));
-                    target.addStatusEffect(new StatusEffectInstance(
-                            StatusEffects.JUMP_BOOST, 20 * 6, 1,
+                    target.addStatusEffect(new StatusEffectInstance(StatusEffects.JUMP_BOOST,
+                            20 * Util.SUPPORT_EFFECT_DURATION,
+                            Math.min(jumpAmplifier + 1, Util.SUPPORT_MAX_JUMP_BOOST_AMPLIFIER),
                             true, false, true));
                 }
 

@@ -1,9 +1,34 @@
 {
-  "item.slimearenamod.my_item": "My Item",
+  "item.slimearenamod.vaccine": "Вакцина",
+  "item.slimearenamod.vaccine.lore": "щось",
+  "item.slimearenamod.potion.speed": "Зілля швидкости",
+  "item.slimearenamod.potion.jump_boost": "Зілля стрибучости",
+  "item.slimearenamod.potion.invisibility": "Зілля невидимости",
+  "item.slimearenamod.potion.invisibility.lore": "Абсолютна невидимість",
+  "item.slimearenamod.potion.slow_falling": "Зілля повільного падіння",
+  "item.slimearenamod.potion.slowness": "Вибухове зілля повільности",
 
   "key.slimearenamod.category": "Slime Arena",
-  "key.slimearenamod.ability": "Use Ability",
+  "key.slimearenamod.ability": "Застосувати здібність",
 
-  "message.slimearenamod.caught_by_slimes": "Слайми спіймали тебе.."
+  "message.slimearenamod.infected_message": "Слайми спіймали тебе!",
+  "message.slimearenamod.cured_message": "Ти знову людина!",
+
+  "shop.slimearenamod.shop_label": "Крамниця",
+  "shop.slimearenamod.not_enough_money": "Бракує смарагдів",
+  "shop.slimearenamod.no_item_to_sell": "В тебе немає цього предмету",
+  "shop.slimearenamod.sell_all": "Продати все",
+  "shop.slimearenamod.no_items_to_sell": "Немає що продати",
+  "shop.slimearenamod.left_click_to_buy": "ЛКМ — придбати",
+  "shop.slimearenamod.right_click_to_sell": "ПКМ — продати",
+
+  "class.slimearenamod.human": "[ЛЮДИНА] ",
+  "class.slimearenamod.boy": "[ХЛОПЧИК] ",
+  "class.slimearenamod.medic": "[ЛІКАР] ",
+
+  "class.slimearenamod.slime": "[СЛАЙМ] ",
+  "class.slimearenamod.sprinter": "[БІГУН] ",
+  "class.slimearenamod.hunter": "[МИСЛИВЕЦЬ] ",
+  "class.slimearenamod.support": "[ПІДТРИМКА] "
 
 }

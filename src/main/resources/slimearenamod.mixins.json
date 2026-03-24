@@ -9,10 +9,19 @@
     "requireAnnotations": true
   },
   "mixins": [
-    "LivingEntityMixin"
+    "server.AbstractMinecartEntityMixin",
+    "EntityMixin",
+    "server.HungerManagerMixin",
+    "server.ItemMixin",
+    "server.LivingEntityMixin",
+    "server.ProjectileMixin",
+    "server.TntEntityMixin"
   ],
   "client": [
-    "InGameHudMixin",
-    "PlayerEntityRendererMixin"
+    "client.ClientPlayerEntityMixin",
+    "client.InGameHudMixin",
+    "client.PlayerEntityRendererMixin",
+    "client.PlayerListEntryMixin",
+    "client.WorldRendererMixin"
   ]
 }

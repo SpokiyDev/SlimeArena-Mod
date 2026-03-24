@@ -1,21 +1,14 @@
-package com.spokiy.slimearenamod.mixin;
+package com.spokiy.slimearenamod.mixin.server;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.spokiy.slimearenamod.component.PlayerData;
-import com.spokiy.slimearenamod.component.SAComponents;
-import com.spokiy.slimearenamod.enums.PlayerTeam;
+import com.spokiy.slimearenamod.components.PlayerData;
+import com.spokiy.slimearenamod.components.SAComponents;
+import com.spokiy.slimearenamod.components.PlayerTeam;
 import com.spokiy.slimearenamod.util.Util;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
-import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin {

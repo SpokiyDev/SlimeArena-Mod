@@ -18,14 +18,14 @@
 		"main": [
 			"com.spokiy.slimearenamod.SlimeArenaMod"
 		],
+		"client": [
+			"com.spokiy.slimearenamod.client.SlimeArenaModClient"
+		],
 		"fabric-datagen": [
 			"com.spokiy.slimearenamod.SlimeArenaModDataGenerator"
 		],
-		"client": [
-			"com.spokiy.slimearenamod.SlimeArenaModClient"
-		],
 		"cardinal-components": [
-			"com.spokiy.slimearenamod.component.SAEntityComponents"
+			"com.spokiy.slimearenamod.components.SAEntityComponents"
 		]
 	},
 	"custom": {
