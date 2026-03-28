@@ -5,42 +5,33 @@ import com.spokiy.slimearenamod.components.PlayerData;
 import com.spokiy.slimearenamod.components.SAComponents;
 import com.spokiy.slimearenamod.components.PlayerClass;
 import com.spokiy.slimearenamod.util.shop.ShopUtil;
-import net.minecraft.client.MinecraftClient;
+import com.spokiy.slimearenamod.world.item.SAItems;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.LoreComponent;
 import net.minecraft.component.type.PotionContentsComponent;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.particle.ParticleEffect;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.particle.SimpleParticleType;
 import net.minecraft.registry.Registries;
-import net.minecraft.registry.RegistryEntryLookup;
-import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
@@ -54,12 +45,9 @@ import java.util.Optional;
 import static com.spokiy.slimearenamod.util.NameTagManager.updatePlayerScoreboardTeam;
 
 public class Util {
-    public static final List<PlayerClass> HUMAN_CLASSES = List.of(
-            PlayerClass.HUMAN
-    );
-    public static final List<PlayerClass> SLIME_CLASSES = List.of(
-            PlayerClass.SLIME, PlayerClass.SPRINTER, PlayerClass.SUPPORT, PlayerClass.HUNTER
-    );
+    public static final PlayerClass[] SLIME_CLASSES = {
+            PlayerClass.SLIME, PlayerClass.SPRINTER, PlayerClass.HUNTER, PlayerClass.TRAPPER, PlayerClass.SUPPORT
+    };
 
     public static float randomRange(Random random, float min, float max) {
         return min + random.nextFloat() * (max - min);
@@ -71,6 +59,9 @@ public class Util {
         SAComponents.PLAYER_DATA.sync(player);
 
         giveClassItems(player, playerClass);
+        if (playerClass.equals(PlayerClass.HUMAN)) {
+            player.giveItemStack(new ItemStack(Items.EMERALD, Config.EMERALDS_TO_GIVE));
+        }
 
         updatePlayerScoreboardTeam(player, playerClass);
     }
@@ -80,6 +71,21 @@ public class Util {
     }
     public static void giveClassItems(ServerPlayerEntity player, PlayerClass playerClass) {
         clearArenaItems(player);
+
+        List<ItemStack> items = new ArrayList<>();
+        switch(playerClass) {
+            case TRAPPER -> {
+                for (int i = 1; i <= 3; i++) {
+                    ItemStack stack = new ItemStack(SAItems.SLIME_TRAP);
+                    Text name = Text.empty().append(stack.getName()).append(Text.of(" №" + i));
+                    stack.set(DataComponentTypes.ITEM_NAME, name);
+                    items.add(stack);
+                }
+            }
+        }
+
+        for(ItemStack item : items) player.giveItemStack(item);
+
     }
 
 
@@ -130,15 +136,16 @@ public class Util {
                 inventory.setStack(i, ItemStack.EMPTY);
             }
         }
-        player.giveItemStack(new ItemStack(Items.EMERALD, EMERALDS_TO_GIVE));
+
     }
 
     public static Identifier getTextureByClass(PlayerClass playerClass) {
         return switch (playerClass) {
             case SLIME -> SlimeArenaMod.prefix("textures/player/slime.png");
-            case SPRINTER -> SlimeArenaMod.prefix("textures/player/slime_sprinter.png");
-            case HUNTER -> SlimeArenaMod.prefix("textures/player/slime_hunter.png");
-            case SUPPORT -> SlimeArenaMod.prefix("textures/player/slime_support.png");
+            case SPRINTER -> SlimeArenaMod.prefix("textures/player/sprinter.png");
+            case HUNTER -> SlimeArenaMod.prefix("textures/player/hunter.png");
+            case TRAPPER -> SlimeArenaMod.prefix("textures/player/trapper.png");
+            case SUPPORT -> SlimeArenaMod.prefix("textures/player/support.png");
             default -> null;
         };
     }
@@ -152,7 +159,7 @@ public class Util {
         }
     }
 
-    public static EntityHitResult getTargetedPlayer(ServerPlayerEntity player, double range) {
+    public static EntityHitResult getTargetedEntity(ServerPlayerEntity player, double range) {
         Vec3d start = player.getCameraPosVec(1.0F);
         Vec3d direction = player.getRotationVec(1.0F);
         Vec3d end = start.add(direction.multiply(range));
@@ -184,9 +191,7 @@ public class Util {
                 start,
                 newEnd,
                 box,
-                entity -> entity instanceof ServerPlayerEntity
-                        && entity.isAlive()
-                        && entity != player,
+                entity -> entity instanceof LivingEntity && entity.isAlive(),
                 maxDistance * maxDistance
         );
     }
@@ -237,46 +242,59 @@ public class Util {
 //    }
 
     private static void nameItemStack(ItemStack stack, String id, String group, List<Text> lore) {
-        stack.set(DataComponentTypes.CUSTOM_NAME, Text.translatable("item.slimearenamod." + group + '.' + id).setStyle(ShopUtil.shopStyle()));
+        stack.set(DataComponentTypes.ITEM_NAME, Text.translatable("item.slimearenamod." + group + '.' + id));
         if (lore != null) {
-            List<Text> newLore = new ArrayList<>(List.of(Text.empty()));
+            List<Text> newLore = new ArrayList<>();
             for (Text line : lore) newLore.add(line.copy().setStyle(ShopUtil.shopStyle(Formatting.DARK_PURPLE)));
             stack.set(DataComponentTypes.LORE, new LoreComponent(newLore));
         }
     }
 
-    public static final int EMERALDS_TO_GIVE = 10;
-    public static final float SLIME_SWIM_SPEED_MULTIPLIER = 1.5f;
+    public static void playSlimeSound(ServerWorld world, Entity entity, float volume) {
+        world.playSound(
+                null,
+                entity.getBlockPos(),
+                SoundEvents.ENTITY_SLIME_JUMP,
+                SoundCategory.NEUTRAL,
+                volume,
+                Util.randomRange(world.random, 0.85F, 1.15F)
+        );
+    }
 
-    // Humans
-    public static final double SLIME_BALL_KNOCKBACK_STRENGTH = 1.2D;
+    public static List<Text> quickLore(Item item, Formatting color, int lines) {
+        String id = Registries.ITEM.getId(item).getPath();
 
-    public static final int ECHO_SHARD_SONIC_BOOM_RANGE = 12;
-    public static final double ECHO_SHARD_SONIC_BOOM_HITBOX_STEP = 0.8;
-    public static final double ECHO_SHARD_SONIC_BOOM_HITBOX_WIDTH = 1.2;
-    public static final double ECHO_SHARD_SONIC_BOOM_KNOCKBACK_XZ = 1.5;
-    public static final double ECHO_SHARD_SONIC_BOOM_KNOCKBACK_Y = 0.5;
+        List<Text> lore = new ArrayList<>();
+        for (var i = 0; i < lines; i ++) {
+             lore.add(Text.translatable("item.slimearenamod." + id + ".lore" + (lines > 1 ? i : ""))
+                    .setStyle(ShopUtil.shopStyle()).formatted(color));
+        }
 
-    public static final double DRIVABLE_MINECART_STEP = 0.2;
-    public static final double DRIVABLE_MINECART_JUMP_STRENGTH = 0.5;
+        return lore;
+    }
+    public static List<Text> quickLore(ItemStack stack, Formatting color, int lines) {
+        return quickLore(stack.getItem(), color, lines);
+    }
+    public static List<Text> quickLore(Item item, Formatting color) {
+        return quickLore(item, color, 1);
+    }
+    public static List<Text> quickLore(ItemStack stack, Formatting color) {
+        return quickLore(stack.getItem(), color, 1);
+    }
+    public static List<Text> quickLore(Item item) {
+        return quickLore(item, Formatting.GRAY, 1);
+    }
+    public static List<Text> quickLore(ItemStack stack) {
+        return quickLore(stack.getItem(), Formatting.GRAY, 1);
+    }
+    public static List<Text> quickLore(Item item, int price) {
+        return quickLore(item, ShopUtil.getLoreColorByPrice(price), 1);
+    }
 
-    // Slimes
-    public static final int SPRINTER_ABILITY_COOLDOWN = 15;
-    public static final int SPRINTER_SPEED_EFFECT_DURATION = 5;
-    public static final int SPRINTER_SPEED_EFFECT_AMPLIFIER = 1;
-    public static final double SPRINTER_DASH_STRENGTH = 1.1D;
+    public static void customCooldown(PlayerEntity user, Item item, int seconds) {
+        if (user.isCreative()) user.getItemCooldownManager().set(item, 20);
+        else                   user.getItemCooldownManager().set(item, 20 * seconds);
+    }
 
-    public static final int HUNTER_ABILITY_COOLDOWN = 30;
-    public static final double HUNTER_ABILITY_RADIUS = 24D;
-    public static final int HUNTER_ABILITY_DURATION = 8;
-
-    public static final int SUPPORT_EFFECT_DURATION = 8;
-    public static final int SUPPORT_MAX_SPEED_AMPLIFIER = 1;
-    public static final int SUPPORT_MAX_JUMP_BOOST_AMPLIFIER = 1;
-    public static final int SUPPORT_ABILITY_COOLDOWN = 20;
-    public static final double SUPPORT_ABILITY_RANGE = 32;
-    public static final int SUPPORT_ABILITY_SLOWNESS_EFFECT_DURATION = 4;
-    public static final int SUPPORT_ABILITY_SLOWNESS_EFFECT_AMPLIFIER = 1;
-    public static final int SUPPORT_ABILITY_BEAM_COLOR = 9154528;
 
 }

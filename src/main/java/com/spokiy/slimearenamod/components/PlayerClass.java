@@ -8,5 +8,6 @@ public enum PlayerClass {
     SLIME,
     SPRINTER,
     HUNTER,
+    TRAPPER,
     SUPPORT
 }

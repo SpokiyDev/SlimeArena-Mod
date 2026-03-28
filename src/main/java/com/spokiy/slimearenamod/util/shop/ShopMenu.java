@@ -1,8 +1,6 @@
 package com.spokiy.slimearenamod.util.shop;
 
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.Enchantments;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -10,7 +8,6 @@ import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
@@ -29,6 +26,7 @@ public class ShopMenu extends ScreenHandler {
     public static final int SLOTS = 54;
     public static final int ROWS = 6;
     private final Inventory inventory;
+    private ShopCategory shopCategory = ShopCategory.THROWABLES;
 
     public ShopMenu(int syncId, PlayerInventory playerInventory, Inventory inventory) {
         super(ScreenHandlerType.GENERIC_9X6, syncId);
@@ -41,10 +39,14 @@ public class ShopMenu extends ScreenHandler {
 
         int i = (ROWS - 4) * 18;
         playerInventory.player.getWorld().getRegistryManager().get(RegistryKeys.ENCHANTMENT);
+
         // GUI
         for (int j = 0; j < ROWS; j++) {
             for (int k = 0; k < 9; k++) {
-                ShopUtil.fillShopSlot(inventory, k + j * 9);
+                System.out.println("Category: " + shopCategory);
+                System.out.println("Map: " + SHOP_ITEMS.get(shopCategory));
+
+                ShopUtil.fillShopSlot(inventory, shopCategory, k + j * 9);
 
                 this.addSlot(new Slot(inventory, k + j * 9, 8 + k * 18, 18 + j * 18) {
                     @Override
@@ -123,7 +125,7 @@ public class ShopMenu extends ScreenHandler {
 
     private void executeOperation(int slotIndex, int button, SlotActionType actionType, ServerPlayerEntity player) {
         Slot slot = this.slots.get(slotIndex);
-        ShopItem shopItem = SHOP_ITEMS.get(slotIndex);
+        ShopItem shopItem = SHOP_ITEMS.get(shopCategory).get(slotIndex);
         Integer price = shopItem.price();
         if (!slot.hasStack() || price == null) return;
 
@@ -149,7 +151,10 @@ public class ShopMenu extends ScreenHandler {
             removeItems(player, Items.EMERALD, totalPrice);
 
             int totalItems = purchases * stackSize;
-            player.giveItemStack(shopItem.stack().copyWithCount(totalItems));
+            ItemStack stack = ShopUtil.prepareShopStack(shopItem, false);
+            stack.setCount(totalItems);
+
+            player.giveItemStack(stack);
 
         }
 
@@ -219,3 +224,4 @@ public class ShopMenu extends ScreenHandler {
     }
 
 }
+

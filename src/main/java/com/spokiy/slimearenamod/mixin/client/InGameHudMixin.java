@@ -4,25 +4,39 @@ import com.spokiy.slimearenamod.SlimeArenaMod;
 import com.spokiy.slimearenamod.components.PlayerData;
 import com.spokiy.slimearenamod.components.SAComponents;
 import com.spokiy.slimearenamod.components.PlayerTeam;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(InGameHud.class)
 public abstract class InGameHudMixin {
-    @Unique
-    private static final Identifier COOLDOWN_BAR_BACKGROUND_TEXTURE = SlimeArenaMod.prefix("hud/experience_bar_background");
-    @Unique
-    private static final Identifier COOLDOWN_BAR_PROGRESS_TEXTURE = SlimeArenaMod.prefix("hud/experience_bar_progress");
+//    @Unique
+//    private static final Identifier COOLDOWN_BAR_BACKGROUND_TEXTURE = SlimeArenaMod.prefix("hud/experience_bar_background");
+//    @Unique
+//    private static final Identifier COOLDOWN_BAR_PROGRESS_TEXTURE = SlimeArenaMod.prefix("hud/experience_bar_progress");
+
+//    @Redirect(method = "renderMiscOverlays", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"))
+//    private boolean onRenderMiscOverlays(ItemStack instance, Item item) {
+//        ClientPlayerEntity player = MinecraftClient.getInstance().player;
+//        if (player == null) return false;
+//
+//        return instance.isOf(Blocks.CARVED_PUMPKIN.asItem()) || instance.isOf(Blocks.PUMPKIN.asItem());
+//    }
 
     @Inject(method = "shouldRenderExperience", at = @At("HEAD"), cancellable = true)
     private void shouldRenderExperienceMixin(CallbackInfoReturnable<Boolean> cir) {

@@ -1,19 +1,15 @@
-package com.spokiy.slimearenamod.entity;
+package com.spokiy.slimearenamod.world.entity;
 
-import com.spokiy.slimearenamod.item.SAItems;
+import com.spokiy.slimearenamod.util.Config;
+import com.spokiy.slimearenamod.world.item.SAItems;
 import com.spokiy.slimearenamod.util.Util;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.*;
 import net.minecraft.entity.vehicle.*;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 
 public class DrivableMinecartEntity extends MinecartEntity {
     public boolean jumping = false;
@@ -48,7 +44,7 @@ public class DrivableMinecartEntity extends MinecartEntity {
 
                     // Step
                     else if (this.horizontalCollision) {
-                        this.setPosition(this.getX(), this.getY() + Util.DRIVABLE_MINECART_STEP, this.getZ());
+                        this.setPosition(this.getX(), this.getY() + Config.DRIVABLE_MINECART_STEP, this.getZ());
                     }
                 }
 
@@ -97,7 +93,7 @@ public class DrivableMinecartEntity extends MinecartEntity {
     private void jump() {
         Vec3d vel = this.getVelocity();
 
-        double jumpVelocity = Util.DRIVABLE_MINECART_JUMP_STRENGTH;
+        double jumpVelocity = Config.DRIVABLE_MINECART_JUMP_STRENGTH;
         if (this.isTouchingWater()) jumpVelocity /= 1.5;
 
         this.setVelocity(vel.x, jumpVelocity, vel.z);

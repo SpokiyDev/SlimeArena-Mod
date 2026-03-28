@@ -1,5 +1,6 @@
-package com.spokiy.slimearenamod.item;
+package com.spokiy.slimearenamod.world.item;
 
+import com.spokiy.slimearenamod.util.Util;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
@@ -14,7 +15,6 @@ public class VaccineItem extends Item {
 
     @Override
     public void appendTooltip(ItemStack itemStack, TooltipContext context, List<Text> tooltip, TooltipType type) {
-        tooltip.add(Text.translatable("item.slimearenamod.vaccine.lore"));
+        tooltip.addAll(Util.quickLore(itemStack));
     }
-
 }

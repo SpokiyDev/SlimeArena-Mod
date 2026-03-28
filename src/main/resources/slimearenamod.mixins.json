@@ -9,10 +9,13 @@
     "requireAnnotations": true
   },
   "mixins": [
-    "server.AbstractMinecartEntityMixin",
     "EntityMixin",
+    "server.AbstractMinecartEntityMixin",
+    "server.EnderPearlEntityMixin",
+    "server.GoatHornItemMixin",
     "server.HungerManagerMixin",
     "server.ItemMixin",
+    "ItemStackMixin",
     "server.LivingEntityMixin",
     "server.ProjectileMixin",
     "server.TntEntityMixin"

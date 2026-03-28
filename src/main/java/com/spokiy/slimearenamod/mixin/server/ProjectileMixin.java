@@ -14,6 +14,7 @@ public class ProjectileMixin {
     @Inject(method = "tick", at = @At("HEAD"))
     private void limitLifetime(CallbackInfo ci) {
         ProjectileEntity projectile = (ProjectileEntity) (Object) this;
+
         if (!projectile.getWorld().isClient && projectile.age % 20 == 0) {
 
             if (projectile.age > 20 * 30) projectile.discard();

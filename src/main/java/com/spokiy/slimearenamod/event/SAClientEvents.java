@@ -2,7 +2,7 @@ package com.spokiy.slimearenamod.event;
 
 import com.spokiy.slimearenamod.components.PlayerData;
 import com.spokiy.slimearenamod.components.SAComponents;
-import com.spokiy.slimearenamod.entity.DrivableMinecartEntity;
+import com.spokiy.slimearenamod.world.entity.DrivableMinecartEntity;
 import com.spokiy.slimearenamod.networking.packet.JumpInputPayload;
 import com.spokiy.slimearenamod.util.SAAbilities;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;

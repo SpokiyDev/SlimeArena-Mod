@@ -1,15 +1,21 @@
 package com.spokiy.slimearenamod.event;
 
+import com.spokiy.slimearenamod.SlimeArenaMod;
 import com.spokiy.slimearenamod.components.PlayerData;
 import com.spokiy.slimearenamod.components.SAComponents;
 import com.spokiy.slimearenamod.components.PlayerClass;
 import com.spokiy.slimearenamod.components.PlayerTeam;
-import com.spokiy.slimearenamod.item.VaccineItem;
+import com.spokiy.slimearenamod.util.Config;
+import com.spokiy.slimearenamod.world.item.VaccineItem;
 import com.spokiy.slimearenamod.util.Util;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
+import net.fabricmc.fabric.api.networking.v1.EntityTrackingEvents;
 import net.minecraft.block.Blocks;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -20,6 +26,7 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.Vec3d;
 
@@ -33,7 +40,6 @@ public class SAEvents {
             tickCounter++;
 
         });
-
 
         AttackEntityCallback.EVENT.register(((attacker, world, hand, entity, result) -> {
             if (!(world instanceof ServerWorld serverWorld)) return ActionResult.PASS;
@@ -83,17 +89,18 @@ public class SAEvents {
                             Objects.requireNonNull(target.getStatusEffect(StatusEffects.JUMP_BOOST)).getAmplifier() : -1;
 
                     target.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED,
-                            20 * Util.SUPPORT_EFFECT_DURATION,
-                            Math.min(speedAmplifier + 1, Util.SUPPORT_MAX_SPEED_AMPLIFIER),
-                            true, true, true));
+                            20 * Config.SUPPORT_EFFECT_DURATION,
+                            Math.min(speedAmplifier + 1, Config.SUPPORT_MAX_SPEED_AMPLIFIER),
+                            false, true, true));
                     target.addStatusEffect(new StatusEffectInstance(StatusEffects.JUMP_BOOST,
-                            20 * Util.SUPPORT_EFFECT_DURATION,
-                            Math.min(jumpAmplifier + 1, Util.SUPPORT_MAX_JUMP_BOOST_AMPLIFIER),
-                            true, false, true));
+                            20 * Config.SUPPORT_EFFECT_DURATION,
+                            Math.min(jumpAmplifier + 1, Config.SUPPORT_MAX_JUMP_BOOST_AMPLIFIER),
+                            false, false, true));
                 }
 
-                // Friendly fire off
-                if (attackerData.getPlayerTeam() == targetData.getPlayerTeam()) return ActionResult.FAIL;
+                // Friendly fire off (Slime Team)
+                if (attackerData.getPlayerTeam() == PlayerTeam.SLIME && targetData.getPlayerTeam() == PlayerTeam.SLIME)
+                    return ActionResult.FAIL;
             }
 
             return ActionResult.PASS;

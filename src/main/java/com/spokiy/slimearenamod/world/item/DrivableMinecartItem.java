@@ -1,23 +1,26 @@
-package com.spokiy.slimearenamod.item;
+package com.spokiy.slimearenamod.world.item;
 
-import com.spokiy.slimearenamod.entity.DrivableMinecartEntity;
+import com.spokiy.slimearenamod.world.entity.DrivableMinecartEntity;
+import com.spokiy.slimearenamod.util.Util;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.DispenserBehavior;
 import net.minecraft.block.dispenser.ItemDispenserBehavior;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
+import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.math.BlockPointer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.Formatting;
+import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldEvents;
 import net.minecraft.world.event.GameEvent;
+
+import java.util.List;
+
 public class DrivableMinecartItem extends Item {
 
     private static final DispenserBehavior DISPENSER_BEHAVIOR = new ItemDispenserBehavior() {
@@ -91,4 +94,10 @@ public class DrivableMinecartItem extends Item {
 
         return ActionResult.success(world.isClient());
     }
+
+    @Override
+    public void appendTooltip(ItemStack itemStack, TooltipContext context, List<Text> tooltip, TooltipType type) {
+        tooltip.addAll(Util.quickLore(itemStack, Formatting.AQUA));
+    }
+
 }

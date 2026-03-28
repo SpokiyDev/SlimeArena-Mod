@@ -1,10 +1,12 @@
 package com.spokiy.slimearenamod;
 
-import com.spokiy.slimearenamod.entity.SAEntities;
+import com.spokiy.slimearenamod.world.block.SABlocks;
+import com.spokiy.slimearenamod.world.entity.SAEntities;
 import com.spokiy.slimearenamod.util.SACommands;
 import com.spokiy.slimearenamod.event.SAEvents;
-import com.spokiy.slimearenamod.item.SAItems;
+import com.spokiy.slimearenamod.world.item.SAItems;
 import com.spokiy.slimearenamod.networking.SAMessages;
+import com.spokiy.slimearenamod.world.item.component.SADataComponents;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -20,6 +22,8 @@ public class SlimeArenaMod implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		SAItems.register();
+		SADataComponents.register();
+		SABlocks.register();
 		SAEntities.register();
 		SAEvents.register();
 		SAMessages.register();

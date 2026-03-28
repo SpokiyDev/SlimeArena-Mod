@@ -18,6 +18,7 @@ public class NameTagManager {
             PlayerClass.SLIME, Formatting.GREEN,
             PlayerClass.SPRINTER, Formatting.AQUA,
             PlayerClass.HUNTER, Formatting.RED,
+            PlayerClass.TRAPPER, Formatting.GOLD,
             PlayerClass.SUPPORT, Formatting.YELLOW
     );
 

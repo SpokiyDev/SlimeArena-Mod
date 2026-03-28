@@ -1,9 +1,11 @@
 package com.spokiy.slimearenamod.mixin.server;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.spokiy.slimearenamod.components.PlayerData;
 import com.spokiy.slimearenamod.components.SAComponents;
 import com.spokiy.slimearenamod.components.PlayerTeam;
+import com.spokiy.slimearenamod.util.Config;
 import com.spokiy.slimearenamod.util.Util;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -19,30 +21,25 @@ public abstract class LivingEntityMixin {
         if (entity instanceof PlayerEntity player) {
             PlayerData playerData = SAComponents.PLAYER_DATA.get(player);
             if (playerData.getPlayerTeam() == PlayerTeam.SLIME) {
-                return original * Util.SLIME_SWIM_SPEED_MULTIPLIER;
+                return original * Config.SLIME_SWIM_SPEED_MULTIPLIER;
             }
         }
 
         return original;
     }
 
-//    @Inject(method = "handleFallDamage", at = @At("HEAD"), cancellable = true)
-//    private void bounceOnFall(float fallDistance, float damageMultiplier, DamageSource source,
-//                              CallbackInfoReturnable<Boolean> cir) {
-//        if ((Object)this instanceof ServerPlayerEntity player) {
-//            PlayerData data = SAComponents.PLAYER_DATA.get(player);
-//
-//            if (data.getPlayerTeam() == PlayerTeam.SLIME && source.isOf(DamageTypes.FALL)) {
-//                player.sendMessage(Text.of("2"));
-//                if (!player.isSneaking()) {
-//                    Vec3d vel = player.getVelocity();
-//
-//                    player.setVelocity(vel.x, fallDistance * 0.5, vel.z);
-//                    player.velocityModified = true;
-//                }
-//
-//                cir.setReturnValue(false);
-//            }
-//        }
-//    }
+    @ModifyReturnValue(
+            method = "computeFallDamage",
+            at = @At("RETURN")
+    )
+    private int modifyFallDamage(int original) {
+        LivingEntity self = (LivingEntity)(Object)this;
+
+        if (self instanceof PlayerEntity) {
+            return Math.round((float) original / 1.5F);
+        }
+
+        return original;
+
+    }
 }

@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(HungerManager.class)
 public class HungerManagerMixin {
 
-    @Inject(method = "update", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "update", at = @At("HEAD"))
     private void alwaysFull(PlayerEntity player, CallbackInfo ci) {
         HungerManager hunger = (HungerManager)(Object)this;
 
@@ -18,6 +18,6 @@ public class HungerManagerMixin {
         hunger.setSaturationLevel(20.0f);
         hunger.setExhaustion(0.0f);
 
-        ci.cancel();
+//        ci.cancel();
     }
 }

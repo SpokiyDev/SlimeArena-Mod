@@ -7,10 +7,12 @@ import net.minecraft.registry.RegistryWrapper;
 import org.ladysnake.cca.api.v3.component.Component;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 
+import java.util.Arrays;
+
 public class PlayerData implements Component, AutoSyncedComponent {
     long abilityCooldown = 0;
-    private PlayerTeam playerTeam = PlayerTeam.NONE;
-    private PlayerClass playerClass = PlayerClass.NONE;
+    private PlayerTeam playerTeam = PlayerTeam.HUMAN;
+    private PlayerClass playerClass = PlayerClass.HUMAN;
 
     // Player Team
     public PlayerTeam getPlayerTeam() { return playerTeam; }
@@ -23,9 +25,8 @@ public class PlayerData implements Component, AutoSyncedComponent {
         this.abilityCooldown = 0;
     }
     private PlayerTeam getPlayerTeamByClass(PlayerClass value) {
-        if (Util.HUMAN_CLASSES.contains(value)) return PlayerTeam.HUMAN;
-        else if (Util.SLIME_CLASSES.contains(value)) return PlayerTeam.SLIME;
-        return PlayerTeam.NONE;
+        if (Arrays.asList(Util.SLIME_CLASSES).contains(value)) return PlayerTeam.SLIME;
+        return PlayerTeam.HUMAN;
     }
 
     // Ability Cooldown

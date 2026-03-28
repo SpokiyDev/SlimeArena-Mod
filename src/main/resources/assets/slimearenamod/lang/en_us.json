@@ -1,12 +1,31 @@
 {
   "item.slimearenamod.vaccine": "Vaccine",
   "item.slimearenamod.vaccine.lore": "smth",
-  "item.slimearenamod.potion.speed": "Potion of Speed",
+
+  "item.slimearenamod.slime_ball.lore": "Сповільнює при влучанні",
+  "item.slimearenamod.tnt.lore": "Тепер можна кидати!",
+  "item.slimearenamod.echo_shard.lore": "Випускає звукову хвилю, що відкидає ворогів",
+  "item.slimearenamod.heavy_core.lore": "ДУЖЕ сильно відкидає ворогів",
+  "item.slimearenamod.pumpkin.lore0": "Надягає ворогові на голову гарбуза,",
+  "item.slimearenamod.pumpkin.lore1": "що ускладнює орієнтування",
+  "item.slimearenamod.pumpkin.lore.remove": "Зніми якнайшвидше!",
+
   "item.slimearenamod.potion.jump_boost": "Potion of Jump Boost",
+  "item.slimearenamod.potion.speed": "Potion of Speed",
+  "item.slimearenamod.potion.slow_falling": "Potion of Slow Falling",
+  "item.slimearenamod.potion.levitation": "Potion of Levitation",
   "item.slimearenamod.potion.invisibility": "Potion of Invisibility",
   "item.slimearenamod.potion.invisibility.lore": "Full invisibility",
-  "item.slimearenamod.potion.slow_falling": "Potion of Slow Falling",
   "item.slimearenamod.potion.slowness": "Splash Potion of Slowness",
+
+
+  "item.slimearenamod.goat_horn.lore": "Відкидає ворогів навколо",
+  "item.slimearenamod.drivable_minecart": "Mine-Cart",
+  "item.slimearenamod.drivable_minecart.lore": "Сідай та рушай!",
+
+  "item.slimearenamod.slime_trap": "Slime Trap",
+  "item.slimearenamod.slime_trap.lore": "Placed",
+  "message.slimearenamod.trap_activated": "Trap has been activated!",
 
   "key.slimearenamod.category": "Slime Arena",
   "key.slimearenamod.ability": "Use Ability",
@@ -29,6 +48,7 @@
   "class.slimearenamod.slime": "[SLIME] ",
   "class.slimearenamod.sprinter": "[SPRINTER] ",
   "class.slimearenamod.hunter": "[HUNTER] ",
+  "class.slimearenamod.trapper": "[TRAPPER] ",
   "class.slimearenamod.support": "[SUPPORT] "
 
 }
