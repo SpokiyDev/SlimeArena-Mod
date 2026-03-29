@@ -1,19 +1,14 @@
-package com.spokiy.slimearenamod.world.entity.projectile;
+package com.spokiy.slimearenamod.world.entity.projectile.blocks;
 
 import com.spokiy.slimearenamod.world.entity.SAEntities;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityStatuses;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.*;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Vec3d;
@@ -29,12 +24,40 @@ public class ThrownHeavyCore extends ThrownBlockEntity {
         super(SAEntities.THROWN_HEAVY_CORE, BLOCK_TYPE.getDefaultState(), world, owner);
     }
 
+
+    private ParticleEffect getParticleParameters() {
+        return ParticleTypes.CRIT;
+    }
+
+    @Override
+    public void handleStatus(byte status) {
+        if (status == EntityStatuses.PLAY_DEATH_SOUND_OR_ADD_PROJECTILE_HIT_PARTICLES) {
+            ParticleEffect particleEffect = this.getParticleParameters();
+
+            for (int i = 0; i < 8; i++) {
+                double d = this.getX() + (this.random.nextDouble() * 2.0 - 1.0) * this.getWidth() * 0.5;
+                double e = this.getY();
+                double f = this.getZ() + (this.random.nextDouble() * 2.0 - 1.0) * this.getWidth() * 0.5;
+                double g = (this.random.nextDouble() * 2.0 - 1.0) * 0.3;
+                double h = 0.3 + this.random.nextDouble() * 0.3;
+                double j = (this.random.nextDouble() * 2.0 - 1.0) * 0.3;
+                this.getWorld().addParticle(particleEffect, d, e, f, g, h, j);
+            }
+
+        }
+    }
+
     @Override
     public void tick() {
         super.tick();
-        if (this.isOnGround()) {
-            this.discard();
-        }
+
+        if (this.isOnGround()) this.discard();
+
+        this.tickPortalTeleportation();
+        this.applyGravity();
+        this.move(MovementType.SELF, this.getVelocity());
+        this.setVelocity(this.getVelocity().multiply(0.98));
+
     }
 
     @Override
@@ -65,24 +88,6 @@ public class ThrownHeavyCore extends ThrownBlockEntity {
 
         }
 
-    }
-
-    @Override
-    public void handleStatus(byte status) {
-        if (status == EntityStatuses.PLAY_DEATH_SOUND_OR_ADD_PROJECTILE_HIT_PARTICLES) {
-            ParticleEffect particleEffect = ParticleTypes.CRIT;
-
-            for (int i = 0; i < 8; i++) {
-                double d = this.getX() + (this.random.nextDouble() * 2.0 - 1.0) * this.getWidth() * 0.5;
-                double e = this.getY() + 0.05 + this.random.nextDouble();
-                double f = this.getZ() + (this.random.nextDouble() * 2.0 - 1.0) * this.getWidth() * 0.5;
-                double g = (this.random.nextDouble() * 2.0 - 1.0) * 0.3;
-                double h = 0.3 + this.random.nextDouble() * 0.3;
-                double j = (this.random.nextDouble() * 2.0 - 1.0) * 0.3;
-                this.getWorld().addParticle(particleEffect, d, e, f, g, h, j);
-            }
-
-        }
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.spokiy.slimearenamod.util;
 
+import com.google.common.collect.Lists;
+import com.mojang.datafixers.util.Pair;
 import com.spokiy.slimearenamod.SlimeArenaMod;
 import com.spokiy.slimearenamod.components.PlayerData;
 import com.spokiy.slimearenamod.components.SAComponents;
@@ -7,12 +9,16 @@ import com.spokiy.slimearenamod.components.PlayerClass;
 import com.spokiy.slimearenamod.util.shop.ShopUtil;
 import com.spokiy.slimearenamod.world.item.SAItems;
 import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.AttributeModifiersComponent;
 import net.minecraft.component.type.LoreComponent;
 import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.EntityAttribute;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffectUtil;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
@@ -23,10 +29,12 @@ import net.minecraft.item.Items;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.screen.ScreenTexts;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
@@ -41,12 +49,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import static com.spokiy.slimearenamod.util.NameTagManager.updatePlayerScoreboardTeam;
 
 public class Util {
     public static final PlayerClass[] SLIME_CLASSES = {
-            PlayerClass.SLIME, PlayerClass.SPRINTER, PlayerClass.HUNTER, PlayerClass.TRAPPER, PlayerClass.SUPPORT
+            PlayerClass.SLIME, PlayerClass.SPRINTER, PlayerClass.MAGE, PlayerClass.HUNTER, PlayerClass.TRAPPER, PlayerClass.SUPPORT
     };
 
     public static float randomRange(Random random, float min, float max) {
@@ -143,6 +152,7 @@ public class Util {
         return switch (playerClass) {
             case SLIME -> SlimeArenaMod.prefix("textures/player/slime.png");
             case SPRINTER -> SlimeArenaMod.prefix("textures/player/sprinter.png");
+            case MAGE -> SlimeArenaMod.prefix("textures/player/mage.png");
             case HUNTER -> SlimeArenaMod.prefix("textures/player/hunter.png");
             case TRAPPER -> SlimeArenaMod.prefix("textures/player/trapper.png");
             case SUPPORT -> SlimeArenaMod.prefix("textures/player/support.png");
@@ -168,7 +178,7 @@ public class Util {
                 new RaycastContext(
                         start,
                         end,
-                        RaycastContext.ShapeType.OUTLINE,
+                        RaycastContext.ShapeType.COLLIDER,
                         RaycastContext.FluidHandling.NONE,
                         player
                 )

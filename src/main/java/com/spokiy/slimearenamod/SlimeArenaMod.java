@@ -1,6 +1,8 @@
 package com.spokiy.slimearenamod;
 
+import com.spokiy.slimearenamod.util.UseItemUtil;
 import com.spokiy.slimearenamod.world.block.SABlocks;
+import com.spokiy.slimearenamod.world.effect.SAStatusEffects;
 import com.spokiy.slimearenamod.world.entity.SAEntities;
 import com.spokiy.slimearenamod.util.SACommands;
 import com.spokiy.slimearenamod.event.SAEvents;
@@ -25,12 +27,15 @@ public class SlimeArenaMod implements ModInitializer {
 		SADataComponents.register();
 		SABlocks.register();
 		SAEntities.register();
+		SAStatusEffects.register();
 		SAEvents.register();
 		SAMessages.register();
 
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
 			SACommands.register(dispatcher);
 		});
+
+		UseItemUtil.initActions();
 
 	}
 

@@ -116,7 +116,7 @@ public class SlimeBallEntity extends ThrownItemEntity {
                 Util.playSlimeSound((ServerWorld) this.getWorld(), this, 0.25F);
             }
 
-            livingEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 20 * 5, 0));
+            livingEntity.addStatusEffect(Config.SLIME_BALL_EFFECT.create());
 
         }
     }

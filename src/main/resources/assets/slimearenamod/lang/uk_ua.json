@@ -2,10 +2,12 @@
   "item.slimearenamod.vaccine": "Вакцина",
   "item.slimearenamod.vaccine.lore": "щось",
 
-  "item.slimearenamod.slime_ball.lore": "Сповільнює при влучанні",
   "item.slimearenamod.tnt.lore": "Тепер можна кидати!",
-  "item.slimearenamod.echo_shard.lore": "Випускає звукову хвилю, що відкидає ворогів",
+  "item.slimearenamod.echo_shard.lore0": "Випускає звукову хвилю,",
+  "item.slimearenamod.echo_shard.lore1": "що відкидає ворогів",
   "item.slimearenamod.heavy_core.lore": "ДУЖЕ сильно відкидає ворогів",
+  "item.slimearenamod.pumpkin.lore": "Надягає ворогові на голову гарбуза",
+  "item.slimearenamod.pumpkin.lore.remove": "Зніми якнайшвидше!",
 
   "item.slimearenamod.potion.jump_boost": "Зілля стрибучости",
   "item.slimearenamod.potion.speed": "Зілля швидкости",
@@ -14,6 +16,7 @@
   "item.slimearenamod.potion.invisibility": "Зілля невидимости",
   "item.slimearenamod.potion.invisibility.lore": "Абсолютна невидимість",
   "item.slimearenamod.potion.slowness": "Вибухове зілля повільности",
+
 
   "item.slimearenamod.goat_horn.lore": "Відкидає ворогів навколо",
   "item.slimearenamod.drivable_minecart": "Їздова вагонетка",
@@ -44,8 +47,11 @@
 
   "class.slimearenamod.slime": "[СЛАЙМ] ",
   "class.slimearenamod.sprinter": "[БІГУН] ",
+  "class.slimearenamod.mage": "[МАГ] ",
   "class.slimearenamod.hunter": "[ХИЖАК] ",
   "class.slimearenamod.trapper": "[ЛОВЕЦЬ] ",
-  "class.slimearenamod.support": "[ПІДТРИМКА] "
+  "class.slimearenamod.support": "[ПІДТРИМКА] ",
+
+  "effect.slimearenamod.stickiness": "Липкість"
 
 }

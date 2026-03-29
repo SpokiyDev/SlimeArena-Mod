@@ -1,36 +1,26 @@
-package com.spokiy.slimearenamod.world.entity.projectile;
+package com.spokiy.slimearenamod.world.entity.projectile.blocks;
 
 import com.spokiy.slimearenamod.util.Config;
 import com.spokiy.slimearenamod.util.EntityTickTimers;
-import com.spokiy.slimearenamod.util.shop.ShopUtil;
 import com.spokiy.slimearenamod.world.entity.SAEntities;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.LoreComponent;
-import net.minecraft.component.type.NbtComponent;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.*;
+import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.RegistryKeys;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.world.World;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
 
 public class ThrownPumpkinEntity extends ThrownBlockEntity {
     private static final Block BLOCK_TYPE = Blocks.PUMPKIN;
@@ -63,10 +53,16 @@ public class ThrownPumpkinEntity extends ThrownBlockEntity {
     @Override
     public void tick() {
         super.tick();
-        if (!this.getWorld().isClient && this.isOnGround()) {
-            this.getWorld().sendEntityStatus(this, EntityStatuses.PLAY_DEATH_SOUND_OR_ADD_PROJECTILE_HIT_PARTICLES);
+
+        if (this.isOnGround()) {
+            if (!this.getWorld().isClient) this.getWorld().sendEntityStatus(this, EntityStatuses.PLAY_DEATH_SOUND_OR_ADD_PROJECTILE_HIT_PARTICLES);
             this.discard();
         }
+
+        this.tickPortalTeleportation();
+        this.applyGravity();
+        this.move(MovementType.SELF, this.getVelocity());
+        this.setVelocity(this.getVelocity().multiply(0.98));
     }
 
     @Override
@@ -86,18 +82,22 @@ public class ThrownPumpkinEntity extends ThrownBlockEntity {
                 }
 
                 // Timer
-                int duration = Config.THROWN_PUMPKIN_EFFECT_DURATION * 20;
+                StatusEffectInstance effect = Config.THROWN_PUMPKIN_EFFECT.create();
 
                 EntityTickTimers timers = (EntityTickTimers) entity;
-                timers.sa$setTimer("blockOnHead", duration);
+                timers.sa$setTimer("blockOnHead", effect.getDuration());
 
-                entity.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, duration, 1,
-                        false, true, true));
+                entity.addStatusEffect(effect);
 
             } else world.sendEntityStatus(this, EntityStatuses.PLAY_DEATH_SOUND_OR_ADD_PROJECTILE_HIT_PARTICLES);
         }
 
         this.discard();
+    }
+
+    @Override
+    protected double getGravity() {
+        return 0.035;
     }
 
 }

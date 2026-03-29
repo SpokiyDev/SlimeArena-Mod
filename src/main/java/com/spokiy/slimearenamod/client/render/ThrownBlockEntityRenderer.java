@@ -1,12 +1,11 @@
 package com.spokiy.slimearenamod.client.render;
 
-import com.spokiy.slimearenamod.world.entity.projectile.ThrownBlockEntity;
-import com.spokiy.slimearenamod.world.entity.projectile.ThrownSpawnerEntity;
+import com.spokiy.slimearenamod.world.entity.projectile.blocks.ThrownBlockEntity;
+import com.spokiy.slimearenamod.world.entity.projectile.blocks.ThrownSpawnerEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayers;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -15,9 +14,6 @@ import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.EntityDimensions;
-import net.minecraft.entity.EntityPose;
-import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;

@@ -7,6 +7,7 @@ public enum PlayerClass {
     // Slime
     SLIME,
     SPRINTER,
+    MAGE,
     HUNTER,
     TRAPPER,
     SUPPORT

@@ -17,6 +17,7 @@ public class NameTagManager {
             // Slime
             PlayerClass.SLIME, Formatting.GREEN,
             PlayerClass.SPRINTER, Formatting.AQUA,
+            PlayerClass.MAGE, Formatting.LIGHT_PURPLE,
             PlayerClass.HUNTER, Formatting.RED,
             PlayerClass.TRAPPER, Formatting.GOLD,
             PlayerClass.SUPPORT, Formatting.YELLOW

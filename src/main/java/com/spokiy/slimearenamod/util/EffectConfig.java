@@ -24,6 +24,6 @@ public class EffectConfig {
     }
 
     public StatusEffectInstance create() {
-        return new StatusEffectInstance(effect, duration, amplifier, ambient, showParticles, showIcon);
+        return new StatusEffectInstance(effect, duration * 20, amplifier, ambient, showParticles, showIcon);
     }
 }

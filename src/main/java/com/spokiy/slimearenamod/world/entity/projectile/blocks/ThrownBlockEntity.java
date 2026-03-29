@@ -1,7 +1,6 @@
-package com.spokiy.slimearenamod.world.entity.projectile;
+package com.spokiy.slimearenamod.world.entity.projectile.blocks;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
@@ -9,9 +8,6 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtHelper;
-import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -51,13 +47,6 @@ public abstract class ThrownBlockEntity extends ProjectileEntity {
 
             this.checkBlockCollision();
 
-            this.tickPortalTeleportation();
-            this.applyGravity();
-            this.move(MovementType.SELF, this.getVelocity());
-            this.setVelocity(this.getVelocity().multiply(0.98));
-            if (this.isOnGround()) {
-                this.setVelocity(this.getVelocity().multiply(0.7, -0.5, 0.7));
-            }
         }
 
     }

@@ -1,28 +1,10 @@
-package com.spokiy.slimearenamod.world.entity.projectile;
+package com.spokiy.slimearenamod.world.entity.projectile.blocks;
 
-import com.spokiy.slimearenamod.util.EntityTickTimers;
-import com.spokiy.slimearenamod.util.shop.ShopUtil;
 import com.spokiy.slimearenamod.world.entity.SAEntities;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.LoreComponent;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.*;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.item.ItemStack;
-import net.minecraft.particle.BlockStateParticleEffect;
-import net.minecraft.particle.ParticleEffect;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.world.World;
-
-import java.util.List;
 
 public class ThrownSpawnerEntity extends ThrownBlockEntity {
     private static final Block BLOCK_TYPE = Blocks.SPAWNER;

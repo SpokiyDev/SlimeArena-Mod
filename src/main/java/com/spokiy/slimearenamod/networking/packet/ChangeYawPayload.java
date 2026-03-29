@@ -4,13 +4,12 @@ import com.spokiy.slimearenamod.SlimeArenaMod;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.packet.CustomPayload;
-import net.minecraft.util.math.BlockPos;
 
-public record KeyPressPayload() implements CustomPayload {
-    public static final CustomPayload.Id<KeyPressPayload> ID =
+public record ChangeYawPayload() implements CustomPayload {
+    public static final CustomPayload.Id<ChangeYawPayload> ID =
             new CustomPayload.Id<>(SlimeArenaMod.prefix("keypress"));
-    public static final PacketCodec<RegistryByteBuf, KeyPressPayload> CODEC =
-            PacketCodec.unit(new KeyPressPayload());
+    public static final PacketCodec<RegistryByteBuf, ChangeYawPayload> CODEC =
+            PacketCodec.unit(new ChangeYawPayload());
 
     @Override
     public CustomPayload.Id<? extends CustomPayload> getId() {
