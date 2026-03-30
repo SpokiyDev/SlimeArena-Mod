@@ -1,40 +1,32 @@
 package com.spokiy.slimearenamod.util;
 
-import com.google.common.collect.Lists;
-import com.mojang.datafixers.util.Pair;
 import com.spokiy.slimearenamod.SlimeArenaMod;
-import com.spokiy.slimearenamod.components.PlayerData;
-import com.spokiy.slimearenamod.components.SAComponents;
-import com.spokiy.slimearenamod.components.PlayerClass;
+import com.spokiy.slimearenamod.data.PlayerData;
+import com.spokiy.slimearenamod.data.SAComponents;
+import com.spokiy.slimearenamod.data.PlayerClass;
 import com.spokiy.slimearenamod.util.shop.ShopUtil;
 import com.spokiy.slimearenamod.world.item.SAItems;
 import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.AttributeModifiersComponent;
 import net.minecraft.component.type.LoreComponent;
 import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffectUtil;
-import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.network.packet.s2c.play.TitleS2CPacket;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.screen.ScreenTexts;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
@@ -49,7 +41,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 import static com.spokiy.slimearenamod.util.NameTagManager.updatePlayerScoreboardTeam;
 
@@ -113,22 +104,20 @@ public class Util {
         changePlayerClass(player, playerData, PlayerClass.HUMAN);
 
         clearArenaItems(player);
+
+        player.networkHandler.sendPacket(
+                new TitleS2CPacket(Text.translatable("message.slimearenamod.cured_message").formatted(Formatting.YELLOW)));
     }
     public static void curePlayer(ServerPlayerEntity player) {
         PlayerData playerData = SAComponents.PLAYER_DATA.get(player);
         curePlayer(player, playerData);
-
-        player.sendMessage(Text
-                .translatable("message.slimearenamod.cured_message")
-                .formatted(Formatting.YELLOW));
     }
 
     public static void infectPlayer(ServerPlayerEntity player, PlayerData playerData) {
         changePlayerClass(player, playerData, PlayerClass.SLIME);
 
-        player.sendMessage(Text
-                .translatable("message.slimearenamod.infected_message")
-                .formatted(Formatting.GREEN));
+        player.networkHandler.sendPacket(
+                new TitleS2CPacket(Text.translatable("message.slimearenamod.infected_message").formatted(Formatting.GREEN)));
     }
     public static void infectPlayer(ServerPlayerEntity player) {
         PlayerData playerData = SAComponents.PLAYER_DATA.get(player);

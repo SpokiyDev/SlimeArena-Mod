@@ -10,18 +10,19 @@
   },
   "mixins": [
     "EntityMixin",
+    "ItemMixin",
+    "ItemStackMixin",
     "server.AbstractMinecartEntityMixin",
     "server.EnderPearlEntityMixin",
     "server.GoatHornItemMixin",
     "server.HungerManagerMixin",
-    "server.ItemMixin",
-    "ItemStackMixin",
     "server.LivingEntityMixin",
     "server.ProjectileMixin",
     "server.TntEntityMixin"
   ],
   "client": [
     "client.ClientPlayerEntityMixin",
+    "client.EntityRendererMixin",
     "client.InGameHudMixin",
     "client.PlayerEntityRendererMixin",
     "client.PlayerListEntryMixin",

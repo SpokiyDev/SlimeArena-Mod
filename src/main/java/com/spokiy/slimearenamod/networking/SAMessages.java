@@ -1,7 +1,7 @@
 package com.spokiy.slimearenamod.networking;
 
-import com.spokiy.slimearenamod.components.PlayerData;
-import com.spokiy.slimearenamod.components.SAComponents;
+import com.spokiy.slimearenamod.data.PlayerData;
+import com.spokiy.slimearenamod.data.SAComponents;
 import com.spokiy.slimearenamod.networking.packet.ChangeYawPayload;
 import com.spokiy.slimearenamod.world.entity.DrivableMinecartEntity;
 import com.spokiy.slimearenamod.networking.packet.JumpInputPayload;

@@ -1,4 +1,4 @@
-package com.spokiy.slimearenamod.world.item.component;
+package com.spokiy.slimearenamod.data.item;
 
 import com.mojang.serialization.Codec;
 import com.spokiy.slimearenamod.SlimeArenaMod;
@@ -6,7 +6,7 @@ import net.minecraft.component.ComponentType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 
-public class SADataComponents {
+public class SAItemDataComponents {
     public static final ComponentType<String> UUID_COMPONENT = Registry.register(
             Registries.DATA_COMPONENT_TYPE,
             SlimeArenaMod.prefix("uuid_component"),

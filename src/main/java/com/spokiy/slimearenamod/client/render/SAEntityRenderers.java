@@ -19,7 +19,7 @@ public class SAEntityRenderers {
     );
     private static final List<EntityType<? extends ThrownBlockEntity>> THROWN_BLOCKS = List.of(
             SAEntities.THROWN_HEAVY_CORE, SAEntities.THROWN_HONEY_BLOCK, SAEntities.THROWN_PUMPKIN,
-            SAEntities.THROWN_SPAWNER
+            SAEntities.THROWN_SPAWNER, SAEntities.THROWN_CAKE
     );
 
     public static void register() {

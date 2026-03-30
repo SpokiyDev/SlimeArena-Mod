@@ -1,8 +1,8 @@
 package com.spokiy.slimearenamod.event;
 
 import com.spokiy.slimearenamod.client.SlimeArenaModClient;
-import com.spokiy.slimearenamod.components.PlayerData;
-import com.spokiy.slimearenamod.components.SAComponents;
+import com.spokiy.slimearenamod.data.PlayerData;
+import com.spokiy.slimearenamod.data.SAComponents;
 import com.spokiy.slimearenamod.world.entity.DrivableMinecartEntity;
 import com.spokiy.slimearenamod.networking.packet.JumpInputPayload;
 import com.spokiy.slimearenamod.util.SAAbilities;

@@ -2,11 +2,10 @@ package com.spokiy.slimearenamod.mixin.server;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import com.spokiy.slimearenamod.components.PlayerData;
-import com.spokiy.slimearenamod.components.SAComponents;
-import com.spokiy.slimearenamod.components.PlayerTeam;
+import com.spokiy.slimearenamod.data.PlayerData;
+import com.spokiy.slimearenamod.data.SAComponents;
+import com.spokiy.slimearenamod.data.PlayerTeam;
 import com.spokiy.slimearenamod.util.Config;
-import com.spokiy.slimearenamod.util.Util;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;

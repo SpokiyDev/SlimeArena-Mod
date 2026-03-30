@@ -1,10 +1,7 @@
 package com.spokiy.slimearenamod.util;
 
 import com.spokiy.slimearenamod.world.entity.projectile.*;
-import com.spokiy.slimearenamod.world.entity.projectile.blocks.ThrownHeavyCore;
-import com.spokiy.slimearenamod.world.entity.projectile.blocks.ThrownHoneyBlockEntity;
-import com.spokiy.slimearenamod.world.entity.projectile.blocks.ThrownPumpkinEntity;
-import com.spokiy.slimearenamod.world.entity.projectile.blocks.ThrownSpawnerEntity;
+import com.spokiy.slimearenamod.world.entity.projectile.blocks.*;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.NbtComponent;
 import net.minecraft.entity.Entity;
@@ -45,11 +42,12 @@ public class UseItemUtil {
         ACTIONS.put(Items.SPAWNER, UseItemUtil::spawner);
         ACTIONS.put(Items.PUMPKIN, UseItemUtil::pumpkin);
         ACTIONS.put(Items.HEAVY_CORE, UseItemUtil::heavyCore);
+        ACTIONS.put(Items.CAKE, UseItemUtil::cake);
     }
 
+
     public static void fireCharge(World world, PlayerEntity user, ItemStack stack) {
-        world.playSound(
-                null, user.getX(), user.getY(), user.getZ(),
+        world.playSound(null, user.getX(), user.getY(), user.getZ(),
                 SoundEvents.ITEM_FIRECHARGE_USE, SoundCategory.NEUTRAL,
                 0.5F,
                 0.4F / (world.getRandom().nextFloat() * 0.4F + 0.8F)
@@ -65,8 +63,7 @@ public class UseItemUtil {
     }
 
     public static void slimeBall(World world, PlayerEntity user, ItemStack stack) {
-        world.playSound(
-                null, user.getX(), user.getY(), user.getZ(),
+        world.playSound(null, user.getX(), user.getY(), user.getZ(),
                 SoundEvents.ENTITY_SLIME_JUMP_SMALL, SoundCategory.NEUTRAL,
                 0.5F,
                 0.4F / (world.getRandom().nextFloat() * 0.4F + 0.8F)
@@ -82,8 +79,7 @@ public class UseItemUtil {
     }
 
     public static void pufferFish(World world, PlayerEntity user, ItemStack stack) {
-        world.playSound(
-                null, user.getX(), user.getY(), user.getZ(),
+        world.playSound(null, user.getX(), user.getY(), user.getZ(),
                 SoundEvents.ENTITY_PUFFER_FISH_FLOP, SoundCategory.NEUTRAL,
                 0.5F,
                 0.4F / (world.getRandom().nextFloat() * 0.4F + 0.8F)
@@ -99,8 +95,7 @@ public class UseItemUtil {
     }
 
     public static void chorusFruit(World world, PlayerEntity user, ItemStack stack) {
-        world.playSound(
-                null, user.getX(), user.getY(), user.getZ(),
+        world.playSound(null, user.getX(), user.getY(), user.getZ(),
                 SoundEvents.ENTITY_SNOWBALL_THROW, SoundCategory.NEUTRAL,
                 0.5F,
                 0.4F / (world.getRandom().nextFloat() * 0.4F + 0.8F)
@@ -164,8 +159,7 @@ public class UseItemUtil {
     }
 
     public static void honeyBlock(World world, PlayerEntity user, ItemStack stack) {
-        world.playSound(
-                null, user.getX(), user.getY(), user.getZ(),
+        world.playSound(null, user.getX(), user.getY(), user.getZ(),
                 SoundEvents.ENTITY_SNOWBALL_THROW, SoundCategory.NEUTRAL,
                 0.5F,
                 0.4F / (world.getRandom().nextFloat() * 0.4F + 0.4F)
@@ -188,8 +182,7 @@ public class UseItemUtil {
     }
 
     public static void spawner(World world, PlayerEntity user, ItemStack stack) {
-        world.playSound(
-                null, user.getX(), user.getY(), user.getZ(),
+        world.playSound(null, user.getX(), user.getY(), user.getZ(),
                 SoundEvents.ENTITY_SNOWBALL_THROW, SoundCategory.NEUTRAL,
                 0.5F,
                 0.4F / (world.getRandom().nextFloat() * 0.4F + 0.4F)
@@ -204,15 +197,14 @@ public class UseItemUtil {
     }
 
     public static void heavyCore(World world, PlayerEntity user, ItemStack stack) {
-        world.playSound(
-                null, user.getX(), user.getY(), user.getZ(),
+        world.playSound(null, user.getX(), user.getY(), user.getZ(),
                 SoundEvents.ENTITY_SNOWBALL_THROW, SoundCategory.NEUTRAL,
                 0.5F,
                 0.4F / (world.getRandom().nextFloat() * 0.4F + 0.4F)
         );
 
         if (!world.isClient) {
-            ThrownHeavyCore projectile = new ThrownHeavyCore(world, user);
+            ThrownHeavyCoreEntity projectile = new ThrownHeavyCoreEntity(world, user);
             projectile.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 1.5F, 0.0F);
             world.spawnEntity(projectile);
         }
@@ -223,8 +215,7 @@ public class UseItemUtil {
         NbtComponent nbt = stack.get(DataComponentTypes.CUSTOM_DATA);
         if (nbt == null || !nbt.copyNbt().getBoolean("slimearenamod:pumpkin_worn")) {
 
-            world.playSound(
-                    null, user.getX(), user.getY(), user.getZ(),
+            world.playSound(null, user.getX(), user.getY(), user.getZ(),
                     SoundEvents.ENTITY_SNOWBALL_THROW, SoundCategory.NEUTRAL,
                     0.5F,
                     0.4F / (world.getRandom().nextFloat() * 0.4F + 0.8F)
@@ -237,6 +228,23 @@ public class UseItemUtil {
             }
         }
     }
+
+    public static void cake(World world, PlayerEntity user, ItemStack stack) {
+
+        world.playSound(null, user.getX(), user.getY(), user.getZ(),
+                SoundEvents.ENTITY_SNOWBALL_THROW, SoundCategory.NEUTRAL,
+                0.5F,
+                0.4F / (world.getRandom().nextFloat() * 0.4F + 0.8F)
+        );
+
+        if (!world.isClient) {
+            ThrownCakeEntity projectile = new ThrownCakeEntity(world, user);
+            projectile.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 1.5F, 0.0F);
+            world.spawnEntity(projectile);
+        }
+
+    }
+
 
 
 

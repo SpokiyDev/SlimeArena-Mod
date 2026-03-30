@@ -25,12 +25,13 @@
 			"com.spokiy.slimearenamod.SlimeArenaModDataGenerator"
 		],
 		"cardinal-components": [
-			"com.spokiy.slimearenamod.components.SAEntityComponents"
+			"com.spokiy.slimearenamod.data.SAComponents"
 		]
 	},
 	"custom": {
 		"cardinal-components": [
-			"slimearenamod:player_data"
+			"slimearenamod:player_data",
+			"slimearenamod:world_data"
 		]
 	},
 	"mixins": [

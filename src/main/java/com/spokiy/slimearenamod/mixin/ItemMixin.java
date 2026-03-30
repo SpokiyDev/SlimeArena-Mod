@@ -1,6 +1,7 @@
-package com.spokiy.slimearenamod.mixin.server;
+package com.spokiy.slimearenamod.mixin;
 
 import com.spokiy.slimearenamod.util.Config;
+import com.spokiy.slimearenamod.util.EffectConfig;
 import com.spokiy.slimearenamod.util.Util;
 import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -21,7 +22,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.spokiy.slimearenamod.util.UseItemUtil.ACTIONS;
@@ -49,25 +50,29 @@ public class ItemMixin {
     private void customTooltip(ItemStack stack, Item.TooltipContext context, List<Text> tooltip, TooltipType type, CallbackInfo ci) {
         Item item = stack.getItem();
 
-        if (item == Items.SLIME_BALL) {
-            quickEffectLore(List.of(Config.SLIME_BALL_EFFECT.create()), tooltip, context);
-        }
-        else if (item == Items.PUFFERFISH) {
-            quickEffectLore(List.of(Config.PUFFERFISH_EFFECT.create()), tooltip, context);
-        }
+        if (item == Items.SLIME_BALL) quickEffectLore(Config.SLIME_BALL_EFFECT, tooltip, context);
+        else if (item == Items.PUFFERFISH) quickEffectLore(Config.PUFFERFISH_EFFECT, tooltip, context);
+        else if (item == Items.HONEY_BLOCK) quickEffectLore(Config.HONEY_BLOCK_EFFECT, tooltip, context);
         else if (item == Items.PUMPKIN) {
             tooltip.addAll(Util.quickLore(item, 3));
-            quickEffectLore(List.of(Config.THROWN_PUMPKIN_EFFECT.create()), tooltip, context);
+            quickEffectLore(Config.PUMPKIN_EFFECT, tooltip, context);
         }
-        else if (item == Items.HONEY_BLOCK) {
-            quickEffectLore(List.of(Config.THROWN_HONEY_BLOCK_EFFECT.create()), tooltip, context);
+        else if (item == Items.CAKE) {
+            tooltip.addAll(Util.quickLore(item, 3));
+            quickEffectLore(Config.CAKE_EFFECTS, tooltip, context);
         }
 
     }
 
     @Unique
-    private void quickEffectLore(List<StatusEffectInstance> effects, List<Text> tooltip, Item.TooltipContext context) {
-        PotionContentsComponent.buildTooltip(effects, tooltip::add, 1.0F, context.getUpdateTickRate());
+    private void quickEffectLore(EffectConfig[] effects, List<Text> tooltip, Item.TooltipContext context) {
+        PotionContentsComponent.buildTooltip(Arrays.stream(effects).map(EffectConfig::create).toList(),
+                tooltip::add, 1.0F, context.getUpdateTickRate());
     }
+    @Unique
+    private void quickEffectLore(EffectConfig effect, List<Text> tooltip, Item.TooltipContext context) {
+        quickEffectLore(new EffectConfig[]{ effect }, tooltip, context);
+    }
+
 
 }

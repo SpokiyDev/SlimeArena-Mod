@@ -1,7 +1,7 @@
 package com.spokiy.slimearenamod.mixin.client;
 
-import com.spokiy.slimearenamod.components.PlayerClass;
-import com.spokiy.slimearenamod.components.SAComponents;
+import com.spokiy.slimearenamod.data.PlayerClass;
+import com.spokiy.slimearenamod.data.SAComponents;
 import com.spokiy.slimearenamod.util.Util;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.PlayerListEntry;

@@ -1,4 +1,4 @@
-package com.spokiy.slimearenamod.components;
+package com.spokiy.slimearenamod.data;
 
 public enum PlayerTeam {
     NONE,

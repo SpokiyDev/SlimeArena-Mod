@@ -1,4 +1,4 @@
-package com.spokiy.slimearenamod.components;
+package com.spokiy.slimearenamod.data;
 
 import com.spokiy.slimearenamod.util.SAAbilities;
 import com.spokiy.slimearenamod.util.Util;
@@ -11,8 +11,8 @@ import java.util.Arrays;
 
 public class PlayerData implements Component, AutoSyncedComponent {
     long abilityCooldown = 0;
-    private PlayerTeam playerTeam = PlayerTeam.HUMAN;
-    private PlayerClass playerClass = PlayerClass.HUMAN;
+    private PlayerTeam playerTeam = PlayerTeam.NONE;
+    private PlayerClass playerClass = PlayerClass.NONE;
 
     // Player Team
     public PlayerTeam getPlayerTeam() { return playerTeam; }

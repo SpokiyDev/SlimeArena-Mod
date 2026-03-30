@@ -6,10 +6,12 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.particle.EntityEffectParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.ColorHelper;
+import net.minecraft.world.GameMode;
 
 import java.util.Map;
 
 public class Config {
+    public static GameMode ARENA_GAMEMODE = GameMode.ADVENTURE;
     public static final int EMERALDS_TO_GIVE = 15;
     public static final float SLIME_SWIM_SPEED_MULTIPLIER = 1.5f;
 
@@ -20,7 +22,7 @@ public class Config {
     public static final EffectConfig PUFFERFISH_EFFECT =
             new EffectConfig(StatusEffects.NAUSEA, 20, 0, false, true, true);
 
-    public static final EffectConfig THROWN_HONEY_BLOCK_EFFECT =
+    public static final EffectConfig HONEY_BLOCK_EFFECT =
             new EffectConfig(SAStatusEffects.STICKINESS, 10, 1, false, true, true);
 
     public static final int ECHO_SHARD_SONIC_BOOM_RANGE = 12;
@@ -29,8 +31,13 @@ public class Config {
     public static final double ECHO_SHARD_SONIC_BOOM_KNOCKBACK_XZ = 1.5;
     public static final double ECHO_SHARD_SONIC_BOOM_KNOCKBACK_Y = 0.5;
 
-    public static final EffectConfig THROWN_PUMPKIN_EFFECT =
+    public static final EffectConfig PUMPKIN_EFFECT =
             new EffectConfig(StatusEffects.BLINDNESS, 5, 0, false, true, true);
+
+    public static final EffectConfig[] CAKE_EFFECTS = {
+            new EffectConfig(StatusEffects.SPEED, 8, 3, false, true, true),
+            new EffectConfig(StatusEffects.JUMP_BOOST, 8, 1, false, true, true),
+    };
 
     // Consumables
     public static final int KNOCKBACK_HORN_COOLDOWN = 20;

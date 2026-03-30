@@ -14,13 +14,13 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class ThrownHeavyCore extends ThrownBlockEntity {
+public class ThrownHeavyCoreEntity extends ThrownBlockEntity {
     private static final Block BLOCK_TYPE = Blocks.HEAVY_CORE;
 
-    public ThrownHeavyCore(EntityType<? extends ThrownHeavyCore> entityType, World world) {
+    public ThrownHeavyCoreEntity(EntityType<? extends ThrownHeavyCoreEntity> entityType, World world) {
         super(entityType, BLOCK_TYPE.getDefaultState(), world);
     }
-    public ThrownHeavyCore(World world, LivingEntity owner) {
+    public ThrownHeavyCoreEntity(World world, LivingEntity owner) {
         super(SAEntities.THROWN_HEAVY_CORE, BLOCK_TYPE.getDefaultState(), world, owner);
     }
 
@@ -103,7 +103,7 @@ public class ThrownHeavyCore extends ThrownBlockEntity {
     private void playSoundOnHit(ServerWorld world) {
         world.playSound(
                 null,
-                this.getBlockPos(),
+                this.getX(), this.getY(), this.getZ(),
                 SoundEvents.BLOCK_HEAVY_CORE_PLACE,
                 SoundCategory.NEUTRAL,
                 1.0F,

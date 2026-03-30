@@ -82,7 +82,7 @@ public class ThrownPumpkinEntity extends ThrownBlockEntity {
                 }
 
                 // Timer
-                StatusEffectInstance effect = Config.THROWN_PUMPKIN_EFFECT.create();
+                StatusEffectInstance effect = Config.PUMPKIN_EFFECT.create();
 
                 EntityTickTimers timers = (EntityTickTimers) entity;
                 timers.sa$setTimer("blockOnHead", effect.getDuration());

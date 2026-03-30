@@ -1,7 +1,9 @@
 package com.spokiy.slimearenamod.world.entity.projectile.blocks;
 
+import com.spokiy.slimearenamod.data.PlayerTeam;
+import com.spokiy.slimearenamod.data.SAComponents;
 import com.spokiy.slimearenamod.util.Config;
-import com.spokiy.slimearenamod.util.Util;
+import com.spokiy.slimearenamod.util.EffectConfig;
 import com.spokiy.slimearenamod.world.entity.SAEntities;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -11,21 +13,19 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class ThrownHoneyBlockEntity extends ThrownBlockEntity {
-    private static final Block BLOCK_TYPE = Blocks.HONEY_BLOCK;
+public class ThrownCakeEntity extends ThrownBlockEntity {
+    private static final Block BLOCK_TYPE = Blocks.CAKE;
 
-    public ThrownHoneyBlockEntity(EntityType<? extends ThrownHoneyBlockEntity> entityType, World world) {
+    public ThrownCakeEntity(EntityType<? extends ThrownCakeEntity> entityType, World world) {
         super(entityType, BLOCK_TYPE.getDefaultState(), world);
     }
-    public ThrownHoneyBlockEntity(World world, LivingEntity owner) {
-        super(SAEntities.THROWN_HONEY_BLOCK, BLOCK_TYPE.getDefaultState(), world, owner);
+    public ThrownCakeEntity(World world, LivingEntity owner) {
+        super(SAEntities.THROWN_CAKE, BLOCK_TYPE.getDefaultState(), world, owner);
     }
 
 
@@ -63,14 +63,20 @@ public class ThrownHoneyBlockEntity extends ThrownBlockEntity {
     protected void onEntityHit(EntityHitResult entityHitResult) {
         super.onEntityHit(entityHitResult);
 
-        if (!this.getWorld().isClient && entityHitResult.getEntity() instanceof LivingEntity entity) {
-            entity.addStatusEffect(Config.HONEY_BLOCK_EFFECT.create());
-            this.getWorld().playSound(null,
-                    this.getX(), this.getY(), this.getZ(),
-                    SoundEvents.BLOCK_HONEY_BLOCK_SLIDE, SoundCategory.NEUTRAL,
-                    0.25F,
-                    Util.randomRange(this.random, 0.85F, 1.15F)
-            );
+        if (!this.getWorld().isClient) {
+            if (entityHitResult.getEntity() instanceof LivingEntity target && this.getOwner() instanceof LivingEntity owner) {
+                PlayerTeam targetTeam = SAComponents.PLAYER_DATA.get(target).getPlayerTeam();
+                PlayerTeam ownerTeam = SAComponents.PLAYER_DATA.get(owner).getPlayerTeam();
+
+                if (targetTeam == ownerTeam) {
+                    for (EffectConfig effect : Config.CAKE_EFFECTS) {
+                        target.addStatusEffect(effect.create());
+                        owner.addStatusEffect(effect.create());
+                    }
+
+                }
+            }
+
         }
     }
 

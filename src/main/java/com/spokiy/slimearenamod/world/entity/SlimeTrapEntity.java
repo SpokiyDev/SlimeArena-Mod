@@ -1,18 +1,13 @@
 package com.spokiy.slimearenamod.world.entity;
 
-import com.spokiy.slimearenamod.components.PlayerTeam;
-import com.spokiy.slimearenamod.components.SAComponents;
+import com.spokiy.slimearenamod.data.PlayerTeam;
+import com.spokiy.slimearenamod.data.SAComponents;
 import com.spokiy.slimearenamod.util.Config;
 import com.spokiy.slimearenamod.util.EffectConfig;
 import com.spokiy.slimearenamod.util.Util;
 import com.spokiy.slimearenamod.world.item.SAItems;
 import net.minecraft.entity.*;
-import net.minecraft.entity.attribute.DefaultAttributeContainer;
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.data.DataTracker;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleEffect;

@@ -1,6 +1,6 @@
 {
-  "item.slimearenamod.vaccine": "Vaccine",
-  "item.slimearenamod.vaccine.lore": "smth",
+  "item.slimearenamod.vaccine": "Вакцина",
+  "item.slimearenamod.vaccine.lore": "щось",
 
   "item.slimearenamod.tnt.lore": "Тепер можна кидати!",
   "item.slimearenamod.echo_shard.lore0": "Випускає звукову хвилю,",
@@ -9,47 +9,49 @@
   "item.slimearenamod.pumpkin.lore": "Надягає ворогові на голову гарбуза",
   "item.slimearenamod.pumpkin.lore.remove": "Зніми якнайшвидше!",
 
-  "item.slimearenamod.potion.jump_boost": "Potion of Jump Boost",
-  "item.slimearenamod.potion.speed": "Potion of Speed",
-  "item.slimearenamod.potion.slow_falling": "Potion of Slow Falling",
-  "item.slimearenamod.potion.levitation": "Potion of Levitation",
-  "item.slimearenamod.potion.invisibility": "Potion of Invisibility",
-  "item.slimearenamod.potion.invisibility.lore": "Full invisibility",
-  "item.slimearenamod.potion.slowness": "Splash Potion of Slowness",
+  "item.slimearenamod.potion.jump_boost": "Зілля стрибучости",
+  "item.slimearenamod.potion.speed": "Зілля швидкости",
+  "item.slimearenamod.potion.slow_falling": "Зілля повільного падіння",
+  "item.slimearenamod.potion.levitation": "Зілля левітації",
+  "item.slimearenamod.potion.invisibility": "Зілля невидимости",
+  "item.slimearenamod.potion.invisibility.lore": "Абсолютна невидимість",
+  "item.slimearenamod.potion.slowness": "Вибухове зілля повільности",
 
 
   "item.slimearenamod.goat_horn.lore": "Відкидає ворогів навколо",
-  "item.slimearenamod.drivable_minecart": "Mine-Cart",
+  "item.slimearenamod.drivable_minecart": "Їздова вагонетка",
   "item.slimearenamod.drivable_minecart.lore": "Сідай та рушай!",
 
-  "item.slimearenamod.slime_trap": "Slime Trap",
-  "item.slimearenamod.slime_trap.lore": "Placed",
-  "message.slimearenamod.trap_activated": "Trap has been activated!",
+  "item.slimearenamod.slime_trap": "Слизова пастка",
+  "item.slimearenamod.slime_trap.lore": "Встановлено",
+  "message.slimearenamod.trap_activated": "Пастку активовано!",
+
 
   "key.slimearenamod.category": "Slime Arena",
-  "key.slimearenamod.ability": "Use Ability",
+  "key.slimearenamod.ability": "Застосувати здібність",
 
-  "message.slimearenamod.infected_message": "The slimes caught you!",
-  "message.slimearenamod.cured_message": "You are human again!",
+  "message.slimearenamod.infected_message": "Тебе заразили слайми!",
+  "message.slimearenamod.cured_message": "Ти знову людина!",
 
-  "shop.slimearenamod.shop_label": "Shop",
-  "shop.slimearenamod.not_enough_money": "Not enough emeralds",
-  "shop.slimearenamod.no_item_to_sell": "You don't have this item",
-  "shop.slimearenamod.sell_all": "Sell all",
-  "shop.slimearenamod.no_items_to_sell": "You don't have anything to sell",
-  "shop.slimearenamod.left_click_to_buy": "Left Click to buy",
-  "shop.slimearenamod.right_click_to_sell": "Right Click to sell",
+  "shop.slimearenamod.shop_label": "Крамниця",
+  "shop.slimearenamod.not_enough_money": "Бракує смарагдів",
+  "shop.slimearenamod.no_item_to_sell": "В тебе немає цього предмету",
+  "shop.slimearenamod.sell_all": "Продати все",
+  "shop.slimearenamod.no_items_to_sell": "Немає що продати",
+  "shop.slimearenamod.left_click_to_buy": "ЛКМ — придбати",
+  "shop.slimearenamod.right_click_to_sell": "ПКМ — продати",
 
-  "class.slimearenamod.human": "[HUMAN] ",
-  "class.slimearenamod.boy": "[BOY] ",
-  "class.slimearenamod.medic": "[MEDIC] ",
+  "class.slimearenamod.human": "[ЛЮДИНА] ",
+  "class.slimearenamod.boy": "[ХЛОПЧИК] ",
+  "class.slimearenamod.medic": "[ЛІКАР] ",
 
-  "class.slimearenamod.slime": "[SLIME] ",
-  "class.slimearenamod.sprinter": "[SPRINTER] ",
-  "class.slimearenamod.mage": "[MAGE] ",
-  "class.slimearenamod.hunter": "[HUNTER] ",
-  "class.slimearenamod.trapper": "[TRAPPER] ",
-  "class.slimearenamod.support": "[SUPPORT] ",
+  "class.slimearenamod.slime": "[СЛАЙМ] ",
+  "class.slimearenamod.sprinter": "[БІГУН] ",
+  "class.slimearenamod.mage": "[МАГ] ",
+  "class.slimearenamod.hunter": "[ХИЖАК] ",
+  "class.slimearenamod.trapper": "[ЛОВЕЦЬ] ",
+  "class.slimearenamod.support": "[ПІДТРИМКА] ",
 
-  "effect.slimearenamod.stickiness": "Stickiness"
+  "effect.slimearenamod.stickiness": "Липкість"
+
 }

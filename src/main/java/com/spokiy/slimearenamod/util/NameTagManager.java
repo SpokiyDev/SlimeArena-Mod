@@ -1,6 +1,6 @@
 package com.spokiy.slimearenamod.util;
 
-import com.spokiy.slimearenamod.components.PlayerClass;
+import com.spokiy.slimearenamod.data.PlayerClass;
 import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.server.MinecraftServer;

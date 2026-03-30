@@ -4,7 +4,7 @@ import com.spokiy.slimearenamod.util.Config;
 import com.spokiy.slimearenamod.util.Util;
 import com.spokiy.slimearenamod.world.entity.projectile.SlimeBallEntity;
 import com.spokiy.slimearenamod.world.entity.SlimeTrapEntity;
-import com.spokiy.slimearenamod.world.item.component.SADataComponents;
+import com.spokiy.slimearenamod.data.item.SAItemDataComponents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.player.PlayerEntity;
@@ -34,7 +34,7 @@ public class SlimeTrapItem extends Item implements ProjectileItem {
 
     @Override
     public boolean hasGlint(ItemStack stack) {
-        return stack.contains(SADataComponents.UUID_COMPONENT) || super.hasGlint(stack);
+        return stack.contains(SAItemDataComponents.UUID_COMPONENT) || super.hasGlint(stack);
     }
 
     @Override
@@ -44,10 +44,10 @@ public class SlimeTrapItem extends Item implements ProjectileItem {
         if (world instanceof ServerWorld serverWorld && entity instanceof PlayerEntity) {
             if (entity.age < 20) return;
 
-            String uuid = stack.get(SADataComponents.UUID_COMPONENT);
+            String uuid = stack.get(SAItemDataComponents.UUID_COMPONENT);
             if (uuid == null) return;
             if (serverWorld.getEntity(UUID.fromString(uuid)) == null) {
-                stack.remove(SADataComponents.UUID_COMPONENT);
+                stack.remove(SAItemDataComponents.UUID_COMPONENT);
             }
 
         }
@@ -56,7 +56,7 @@ public class SlimeTrapItem extends Item implements ProjectileItem {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
-        String uuid = stack.get(SADataComponents.UUID_COMPONENT);
+        String uuid = stack.get(SAItemDataComponents.UUID_COMPONENT);
         if (uuid == null) {
             world.playSound(
                     null,
@@ -76,7 +76,7 @@ public class SlimeTrapItem extends Item implements ProjectileItem {
                 slimeballEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 1.5F, 1.0F);
                 world.spawnEntity(slimeballEntity);
 
-                stack.set(SADataComponents.UUID_COMPONENT, slimeballEntity.getUuidAsString());
+                stack.set(SAItemDataComponents.UUID_COMPONENT, slimeballEntity.getUuidAsString());
             }
 
             Util.customCooldown(user, this, Config.TRAPPER_PLACE_TRAP_COOLDOWN);
@@ -85,7 +85,7 @@ public class SlimeTrapItem extends Item implements ProjectileItem {
             if (world instanceof ServerWorld serverWorld) {
                 Entity trap = serverWorld.getEntity(UUID.fromString(uuid));
                 if (trap != null) {
-                    stack.remove(SADataComponents.UUID_COMPONENT);
+                    stack.remove(SAItemDataComponents.UUID_COMPONENT);
 
                     // Visuals
                     world.sendEntityStatus(trap, EntityStatuses.PLAY_DEATH_SOUND_OR_ADD_PROJECTILE_HIT_PARTICLES);
@@ -113,7 +113,7 @@ public class SlimeTrapItem extends Item implements ProjectileItem {
             return ActionResult.FAIL;
         } else {
             ItemStack stack = context.getStack();
-            if (stack.get(SADataComponents.UUID_COMPONENT) != null) return ActionResult.PASS;
+            if (stack.get(SAItemDataComponents.UUID_COMPONENT) != null) return ActionResult.PASS;
 
             World world = context.getWorld();
             ItemPlacementContext itemPlacementContext = new ItemPlacementContext(context);
@@ -125,7 +125,7 @@ public class SlimeTrapItem extends Item implements ProjectileItem {
                 if (world instanceof ServerWorld serverWorld) {
 
                     SlimeTrapEntity trap = new SlimeTrapEntity(serverWorld, vec3d.getX(), pos.getY(), vec3d.getZ(), player);
-                    stack.set(SADataComponents.UUID_COMPONENT, trap.getUuidAsString());
+                    stack.set(SAItemDataComponents.UUID_COMPONENT, trap.getUuidAsString());
                     Util.customCooldown(player, this, Config.TRAPPER_PLACE_TRAP_COOLDOWN);
 
                     serverWorld.spawnEntity(trap);
@@ -155,7 +155,7 @@ public class SlimeTrapItem extends Item implements ProjectileItem {
     @Override
     public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
         super.appendTooltip(stack, context, tooltip, type);
-        if (stack.get(SADataComponents.UUID_COMPONENT) != null) {
+        if (stack.get(SAItemDataComponents.UUID_COMPONENT) != null) {
             tooltip.addAll(Util.quickLore(stack, Formatting.GOLD));
         }
 

@@ -1,25 +1,16 @@
 package com.spokiy.slimearenamod.mixin.client;
 
-import com.spokiy.slimearenamod.SlimeArenaMod;
-import com.spokiy.slimearenamod.components.PlayerData;
-import com.spokiy.slimearenamod.components.SAComponents;
-import com.spokiy.slimearenamod.components.PlayerTeam;
-import net.minecraft.block.Blocks;
+import com.spokiy.slimearenamod.data.PlayerData;
+import com.spokiy.slimearenamod.data.SAComponents;
+import com.spokiy.slimearenamod.data.PlayerTeam;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Identifier;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 

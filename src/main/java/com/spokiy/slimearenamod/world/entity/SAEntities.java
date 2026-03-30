@@ -2,10 +2,7 @@ package com.spokiy.slimearenamod.world.entity;
 
 import com.spokiy.slimearenamod.SlimeArenaMod;
 import com.spokiy.slimearenamod.world.entity.projectile.*;
-import com.spokiy.slimearenamod.world.entity.projectile.blocks.ThrownHeavyCore;
-import com.spokiy.slimearenamod.world.entity.projectile.blocks.ThrownHoneyBlockEntity;
-import com.spokiy.slimearenamod.world.entity.projectile.blocks.ThrownPumpkinEntity;
-import com.spokiy.slimearenamod.world.entity.projectile.blocks.ThrownSpawnerEntity;
+import com.spokiy.slimearenamod.world.entity.projectile.blocks.*;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.registry.Registries;
@@ -33,13 +30,17 @@ public class SAEntities {
             SlimeArenaMod.prefix("thrown_spawner"), EntityType.Builder.<ThrownSpawnerEntity>create(ThrownSpawnerEntity::new, SpawnGroup.MISC)
                     .dimensions(0.98F, 0.98F).maxTrackingRange(10).trackingTickInterval(1).build()
     );
-    public static final EntityType<ThrownHeavyCore> THROWN_HEAVY_CORE = Registry.register(Registries.ENTITY_TYPE,
-            SlimeArenaMod.prefix("thrown_heavy_core"), EntityType.Builder.<ThrownHeavyCore>create(ThrownHeavyCore::new, SpawnGroup.MISC)
+    public static final EntityType<ThrownHeavyCoreEntity> THROWN_HEAVY_CORE = Registry.register(Registries.ENTITY_TYPE,
+            SlimeArenaMod.prefix("thrown_heavy_core"), EntityType.Builder.<ThrownHeavyCoreEntity>create(ThrownHeavyCoreEntity::new, SpawnGroup.MISC)
                     .dimensions(0.48F, 0.48F).maxTrackingRange(10).trackingTickInterval(1).build()
     );
     public static final EntityType<ThrownPumpkinEntity> THROWN_PUMPKIN = Registry.register(Registries.ENTITY_TYPE,
             SlimeArenaMod.prefix("thrown_pumpkin"), EntityType.Builder.<ThrownPumpkinEntity>create(ThrownPumpkinEntity::new, SpawnGroup.MISC)
                     .dimensions(0.98F, 0.98F).maxTrackingRange(10).trackingTickInterval(1).build()
+    );
+    public static final EntityType<ThrownCakeEntity> THROWN_CAKE = Registry.register(Registries.ENTITY_TYPE,
+            SlimeArenaMod.prefix("thrown_cake"), EntityType.Builder.<ThrownCakeEntity>create(ThrownCakeEntity::new, SpawnGroup.MISC)
+                    .dimensions(0.87F, 0.48F).maxTrackingRange(10).trackingTickInterval(1).build()
     );
 
     public static final EntityType<DrivableMinecartEntity> DRIVABLE_MINECART = Registry.register(Registries.ENTITY_TYPE,

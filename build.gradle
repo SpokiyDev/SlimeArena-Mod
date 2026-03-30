@@ -36,6 +36,7 @@ dependencies {
 	// Replace modImplementation with modApi if you expose components in your own API
 	modImplementation "org.ladysnake.cardinal-components-api:cardinal-components-base:${project.cardinal_components_api_version}"
 	modImplementation "org.ladysnake.cardinal-components-api:cardinal-components-entity:${project.cardinal_components_api_version}"
+	modImplementation "org.ladysnake.cardinal-components-api:cardinal-components-level:${project.cardinal_components_api_version}"
 	
 }
 

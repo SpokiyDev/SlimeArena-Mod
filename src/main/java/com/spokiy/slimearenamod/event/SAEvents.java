@@ -1,21 +1,16 @@
 package com.spokiy.slimearenamod.event;
 
 import com.spokiy.slimearenamod.SlimeArenaMod;
-import com.spokiy.slimearenamod.components.PlayerData;
-import com.spokiy.slimearenamod.components.SAComponents;
-import com.spokiy.slimearenamod.components.PlayerClass;
-import com.spokiy.slimearenamod.components.PlayerTeam;
+import com.spokiy.slimearenamod.data.*;
+import com.spokiy.slimearenamod.data.GamePhaseType;
 import com.spokiy.slimearenamod.util.Config;
 import com.spokiy.slimearenamod.world.item.VaccineItem;
 import com.spokiy.slimearenamod.util.Util;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
-import net.fabricmc.fabric.api.networking.v1.EntityTrackingEvents;
 import net.minecraft.block.Blocks;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -28,17 +23,95 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.GameMode;
 
-import java.util.Objects;
+import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class SAEvents {
     static int tickCounter = 0;
 
     public static void register() {
+        ServerPlayerEvents.JOIN.register((player) -> {
+            PlayerData playerData = SAComponents.PLAYER_DATA.get(player);
+            if (playerData.getPlayerClass() == PlayerClass.NONE) {
+                Util.changePlayerClass(player, playerData, PlayerClass.HUMAN);
+            }
+
+            // Game timer
+            ServerWorld world = Objects.requireNonNull(player.getServer()).getOverworld();
+            WorldData worldData = SAComponents.WORLD_DATA.get(world);
+
+            SlimeArenaMod.bossBar.addPlayer(player);
+            if (worldData.getGameTimer() > 0) {
+                if (!player.getCommandTags().contains(worldData.getGameTag())) {
+                    player.changeGameMode(GameMode.SPECTATOR);
+                    // Tp to the map
+                } else player.changeGameMode(Config.ARENA_GAMEMODE);
+            } else {
+                player.changeGameMode(Config.ARENA_GAMEMODE);
+                Util.changePlayerClass(player, playerData, PlayerClass.HUMAN);
+                player.teleport(world, 0, -60, 0, player.getYaw(), 0);
+
+                if (!player.getCommandTags().isEmpty()) {
+                    for (String tag : new HashSet<>(player.getCommandTags())) player.removeCommandTag(tag);
+                }
+            }
+
+        });
+
         ServerTickEvents.END_SERVER_TICK.register(server -> {
             tickCounter++;
 
+            // Game timer
+            WorldData worldData = SAComponents.WORLD_DATA.get(server.getOverworld());
+            if (worldData.getGameTimer() > 0) {
+                worldData.setGameTimer(worldData.getGameTimer() - 1);
+            } else if (worldData.getGameTimer() == 0) {
+                switch (worldData.getPhase()) {
+                    case SLIME:
+                        worldData.setPhase(GamePhaseType.PLAYING);
+
+                        List<ServerPlayerEntity> players = server.getPlayerManager().getPlayerList().stream()
+                                .filter(p -> p.getCommandTags().contains(worldData.getGameTag()))
+                                .toList();
+
+                        if (!players.isEmpty()) {
+                            worldData.initGameTimer(WorldData.GAME_PHASES.get(GamePhaseType.PLAYING).maxTimerValue);
+
+                            ServerPlayerEntity randomPlayer =
+                                    players.get(ThreadLocalRandom.current().nextInt(players.size()));
+
+                            Util.infectPlayer(randomPlayer);
+                            break;
+                        } else {
+                            server.getPlayerManager().broadcast(
+                                    Text.literal("Гру було аварійно завершено").formatted(Formatting.RED),
+                                    false);
+                        }
+
+                    case PLAYING:
+                        SlimeArenaMod.bossBar.setVisible(false);
+                        SlimeArenaMod.bossBar.clearPlayers();
+
+                        worldData.setPhase(GamePhaseType.LOBBY);
+                        worldData.setGameTimer(-1);
+
+                        for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
+                            player.changeGameMode(Config.ARENA_GAMEMODE);
+                            Util.changePlayerClass(player, SAComponents.PLAYER_DATA.get(player), PlayerClass.HUMAN);
+                            player.teleport(server.getOverworld(), 0, -60, 0, player.getYaw(), 0);
+
+                            if (!player.getCommandTags().isEmpty()) {
+                                for (String tag : new HashSet<>(player.getCommandTags())) player.removeCommandTag(tag);
+                            }
+                        }
+                        break;
+                }
+
+            }
         });
 
         AttackEntityCallback.EVENT.register(((attacker, world, hand, entity, result) -> {

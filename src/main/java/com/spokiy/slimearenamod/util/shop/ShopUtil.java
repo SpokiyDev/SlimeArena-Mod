@@ -70,9 +70,10 @@ public class ShopUtil {
         map.put(19, ShopItem.create(new ItemStack(Items.WIND_CHARGE, 2), 2));
         map.put(20, ShopItem.withQuickLore(new ItemStack(Items.TNT, 3), 3));
         map.put(21, ShopItem.create(new ItemStack(Items.PUMPKIN), 3));
-        map.put(22, ShopItem.create(new ItemStack(Items.ENDER_PEARL), 4));
-        map.put(23, ShopItem.withQuickLore(2, new ItemStack(Items.ECHO_SHARD, 2), 4));
-        map.put(24, ShopItem.withQuickLore(new ItemStack(Items.HEAVY_CORE), 4));
+        map.put(22, ShopItem.create(new ItemStack(Items.CAKE), 3));
+        map.put(23, ShopItem.create(new ItemStack(Items.ENDER_PEARL), 4));
+        map.put(24, ShopItem.withQuickLore(2, new ItemStack(Items.ECHO_SHARD, 2), 4));
+        map.put(25, ShopItem.withQuickLore(new ItemStack(Items.HEAVY_CORE), 4));
 
         // Row 3
         map.put(28, ShopItem.create(Util.customPotion(Items.POTION, StatusEffects.JUMP_BOOST, 20 * 20, 1), 1));

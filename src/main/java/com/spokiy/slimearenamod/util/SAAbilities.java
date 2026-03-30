@@ -1,32 +1,25 @@
 package com.spokiy.slimearenamod.util;
 
-import com.spokiy.slimearenamod.components.PlayerData;
-import com.spokiy.slimearenamod.components.SAComponents;
-import com.spokiy.slimearenamod.components.PlayerClass;
-import com.spokiy.slimearenamod.components.PlayerTeam;
+import com.spokiy.slimearenamod.data.PlayerData;
+import com.spokiy.slimearenamod.data.SAComponents;
+import com.spokiy.slimearenamod.data.PlayerClass;
+import com.spokiy.slimearenamod.data.PlayerTeam;
 import com.spokiy.slimearenamod.world.item.SlimeTrapItem;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.particle.EntityEffectParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.Text;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.ColorHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.RaycastContext;
-import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 
 import java.util.List;
@@ -125,7 +118,7 @@ public class SAAbilities {
         Vec3d centerPos = Vec3d.ofCenter(target);
         Vec3d pos = new Vec3d(centerPos.x, hit.getPos().y, centerPos.z);
 
-        // Visuals before the teleportation
+        // Visuals before teleportation
         world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, player.getSoundCategory(), 1.0F, 1.0F);
         world.spawnParticles(ParticleTypes.REVERSE_PORTAL,
                 player.getParticleX(0.5), player.getRandomBodyY() - 0.5, player.getParticleZ(0.5),
@@ -135,7 +128,7 @@ public class SAAbilities {
         player.requestTeleport(pos.x, pos.y, pos.z);
         world.emitGameEvent(GameEvent.TELEPORT, pos, GameEvent.Emitter.of(player));
 
-        // Visuals after the teleportation
+        // Visuals after teleportation
         world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, player.getSoundCategory(), 1.0F, 1.0F);
         world.spawnParticles(ParticleTypes.REVERSE_PORTAL,
                 player.getParticleX(0.5), player.getRandomBodyY() - 0.5, player.getParticleZ(0.5),
