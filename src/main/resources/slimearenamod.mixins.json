@@ -18,6 +18,8 @@
     "server.HungerManagerMixin",
     "server.LivingEntityMixin",
     "server.ProjectileMixin",
+    "server.SlimeEntityMixin",
+    "server.SnowballEntityMixin",
     "server.TntEntityMixin"
   ],
   "client": [

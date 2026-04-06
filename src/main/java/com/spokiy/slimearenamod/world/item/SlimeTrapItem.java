@@ -1,6 +1,6 @@
 package com.spokiy.slimearenamod.world.item;
 
-import com.spokiy.slimearenamod.util.Config;
+import com.spokiy.slimearenamod.config.Config;
 import com.spokiy.slimearenamod.util.Util;
 import com.spokiy.slimearenamod.world.entity.projectile.SlimeBallEntity;
 import com.spokiy.slimearenamod.world.entity.SlimeTrapEntity;

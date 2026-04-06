@@ -22,7 +22,7 @@
 			"com.spokiy.slimearenamod.client.SlimeArenaModClient"
 		],
 		"fabric-datagen": [
-			"com.spokiy.slimearenamod.SlimeArenaModDataGenerator"
+			"com.spokiy.slimearenamod.datagen.SlimeArenaModDataGenerator"
 		],
 		"cardinal-components": [
 			"com.spokiy.slimearenamod.data.SAComponents"

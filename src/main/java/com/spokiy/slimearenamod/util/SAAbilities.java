@@ -4,10 +4,9 @@ import com.spokiy.slimearenamod.data.PlayerData;
 import com.spokiy.slimearenamod.data.SAComponents;
 import com.spokiy.slimearenamod.data.PlayerClass;
 import com.spokiy.slimearenamod.data.PlayerTeam;
+import com.spokiy.slimearenamod.config.Config;
 import com.spokiy.slimearenamod.world.item.SlimeTrapItem;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
@@ -84,10 +83,7 @@ public class SAAbilities {
         player.addVelocity(look.x * strength, look.y * strength / 1.5, look.z * strength);
         player.velocityModified = true;
         // Effects
-        player.addStatusEffect(new StatusEffectInstance(
-                StatusEffects.SPEED,
-                20 * Config.SPRINTER_SPEED_EFFECT_DURATION, Config.SPRINTER_SPEED_EFFECT_AMPLIFIER,
-                false, true, true));
+        player.addStatusEffect(Config.SPRINTER_SPEED_EFFECT.create());
     }
 
     public static void mageAbility(ServerPlayerEntity player) {
@@ -140,7 +136,10 @@ public class SAAbilities {
 
     public static void hunterAbility(ServerPlayerEntity player) {
 
-        player.addStatusEffect(Config.HUNTER_ABILITY_BUFF.create());
+        for (EffectConfig effectConfig : Config.HUNTER_ABILITY_BUFFS) player.addStatusEffect(effectConfig.create());
+        player.getServerWorld().playSound(null, player.getX(), player.getY(), player.getZ(),
+                SoundEvents.ENTITY_ILLUSIONER_CAST_SPELL, player.getSoundCategory(),
+                1.0F, 1.0F);
 
         List<LivingEntity> entities = player.getServerWorld().getEntitiesByClass(LivingEntity.class, player.getBoundingBox().expand(Config.HUNTER_ABILITY_RADIUS), LivingEntity::isAlive);
         for(LivingEntity target : entities) {
@@ -148,7 +147,8 @@ public class SAAbilities {
                 PlayerData playerData = SAComponents.PLAYER_DATA.get(playerEntity);
                 if (playerData.getPlayerTeam() == PlayerTeam.SLIME) continue;
             }
-            target.addStatusEffect(Config.HUNTER_ABILITY_EFFECT.create());
+            for (EffectConfig effectConfig : Config.HUNTER_ABILITY_EFFECTS) target.addStatusEffect(effectConfig.create());
+
         }
 
     }

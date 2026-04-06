@@ -56,6 +56,10 @@ public class SAEntities {
     );
 
 
+    public static final EntityType<SlimeTargetEntity> SLIME_TARGET = Registry.register(Registries.ENTITY_TYPE,
+            SlimeArenaMod.prefix("slime_target"), EntityType.Builder.<SlimeTargetEntity>create(SlimeTargetEntity::new, SpawnGroup.MISC)
+                    .dimensions(0.52F, 0.52F).eyeHeight(0.325F).spawnBoxScale(4.0F).maxTrackingRange(10).build()
+    );
 
 
     public static void register() {

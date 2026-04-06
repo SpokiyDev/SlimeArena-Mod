@@ -1,29 +1,28 @@
 {
   "item.slimearenamod.vaccine": "Вакцина",
-  "item.slimearenamod.vaccine.lore": "щось",
+  "item.slimearenamod.vaccine.desc": "щось",
 
-  "item.slimearenamod.tnt.lore": "Тепер можна кидати!",
-  "item.slimearenamod.echo_shard.lore0": "Випускає звукову хвилю,",
-  "item.slimearenamod.echo_shard.lore1": "що відкидає ворогів",
-  "item.slimearenamod.heavy_core.lore": "ДУЖЕ сильно відкидає ворогів",
-  "item.slimearenamod.pumpkin.lore": "Надягає ворогові на голову гарбуза",
-  "item.slimearenamod.pumpkin.lore.remove": "Зніми якнайшвидше!",
+  "item.slimearenamod.tnt.desc": "Тепер можна кидати!",
+  "item.slimearenamod.echo_shard.desc": "Випускає звукову хвилю,\nщо відкидає ворогів",
+  "item.slimearenamod.heavy_core.desc": "ДУЖЕ сильно відкидає ворогів",
+  "item.slimearenamod.pumpkin.desc": "Надягає ворогові на голову гарбуза",
+  "item.slimearenamod.cake.desc": "При влучанні надає тобі\nта цілі позитивні ефекти\n",
 
   "item.slimearenamod.potion.jump_boost": "Зілля стрибучости",
   "item.slimearenamod.potion.speed": "Зілля швидкости",
   "item.slimearenamod.potion.slow_falling": "Зілля повільного падіння",
   "item.slimearenamod.potion.levitation": "Зілля левітації",
   "item.slimearenamod.potion.invisibility": "Зілля невидимости",
-  "item.slimearenamod.potion.invisibility.lore": "Абсолютна невидимість",
+  "item.slimearenamod.potion.invisibility.desc": "Абсолютна невидимість",
   "item.slimearenamod.potion.slowness": "Вибухове зілля повільности",
 
 
-  "item.slimearenamod.goat_horn.lore": "Відкидає ворогів навколо",
+  "item.slimearenamod.goat_horn.desc": "Відкидає ворогів навколо",
   "item.slimearenamod.drivable_minecart": "Їздова вагонетка",
-  "item.slimearenamod.drivable_minecart.lore": "Сідай та рушай!",
+  "item.slimearenamod.drivable_minecart.desc": "Сідай та рушай!",
 
   "item.slimearenamod.slime_trap": "Слизова пастка",
-  "item.slimearenamod.slime_trap.lore": "Встановлено",
+  "item.slimearenamod.slime_trap.desc": "Встановлено",
   "message.slimearenamod.trap_activated": "Пастку активовано!",
 
 
@@ -32,26 +31,47 @@
 
   "message.slimearenamod.infected_message": "Тебе заразили слайми!",
   "message.slimearenamod.cured_message": "Ти знову людина!",
+  "message.slimearenamod.none_win": "Гру завершено",
+  "message.slimearenamod.human_win": "Люди перемогли",
+  "message.slimearenamod.slime_win": "Слайми перемогли",
 
-  "shop.slimearenamod.shop_label": "Крамниця",
-  "shop.slimearenamod.not_enough_money": "Бракує смарагдів",
-  "shop.slimearenamod.no_item_to_sell": "В тебе немає цього предмету",
-  "shop.slimearenamod.sell_all": "Продати все",
-  "shop.slimearenamod.no_items_to_sell": "Немає що продати",
-  "shop.slimearenamod.left_click_to_buy": "ЛКМ — придбати",
-  "shop.slimearenamod.right_click_to_sell": "ПКМ — продати",
+  "menu.slimearenamod.shop.label": "Крамниця",
+  "menu.slimearenamod.shop.not_enough_money": "Бракує смарагдів",
+  "menu.slimearenamod.shop.no_item_to_sell": "В тебе немає цього предмету",
+  "menu.slimearenamod.shop.sell_all": "Продати все",
+  "menu.slimearenamod.shop.no_items_to_sell": "Немає що продати",
+  "menu.slimearenamod.shop.left_click_to_buy": "ЛКМ — придбати",
+  "menu.slimearenamod.shop.right_click_to_sell": "ПКМ — продати",
+  "menu.slimearenamod.shop.unable_to_sell": "Неможливо продати",
 
-  "class.slimearenamod.human": "[ЛЮДИНА] ",
-  "class.slimearenamod.boy": "[ХЛОПЧИК] ",
-  "class.slimearenamod.medic": "[ЛІКАР] ",
+  "menu.slimearenamod.class_selection.label": "Обери клас",
+  "menu.slimearenamod.class_selection.choose_action": "Ти обрав: ",
 
-  "class.slimearenamod.slime": "[СЛАЙМ] ",
-  "class.slimearenamod.sprinter": "[БІГУН] ",
-  "class.slimearenamod.mage": "[МАГ] ",
-  "class.slimearenamod.hunter": "[ХИЖАК] ",
-  "class.slimearenamod.trapper": "[ЛОВЕЦЬ] ",
-  "class.slimearenamod.support": "[ПІДТРИМКА] ",
+  "effect.slimearenamod.slime_team": "Слайм",
+  "effect.slimearenamod.stickiness": "Липкість",
 
-  "effect.slimearenamod.stickiness": "Липкість"
+  "commands.slimearenamod.reload_server_config.success": "Серверний файл конфігурації успішно перезавантажено",
+  "commands.slimearenamod.only_server.fail": "Виконання можливе лише на сервері",
+
+
+  "class.slimearenamod.human": "Людина",
+
+  "class.slimearenamod.slime": "Слайм",
+  "class.slimearenamod.slime.desc": "Звичайнісінький слайм.",
+
+  "class.slimearenamod.sprinter": "Бігун",
+  "class.slimearenamod.sprinter.desc": "#Здібність:# робить _ривок_,\nпісля якого отримує _швидкість_",
+
+  "class.slimearenamod.mage": "Маг",
+  "class.slimearenamod.mage.desc": "#Здібність:# _телепортується_ вперед.\n~(зажми клавішу здібности для прицілювання)~",
+
+  "class.slimearenamod.hunter": "Хижак",
+  "class.slimearenamod.hunter.desc": "#Здібність:# _підсвічує_ всіх ворогів навколо,\nа сам отримує _невидимість та швидкість_",
+
+  "class.slimearenamod.trapper": "Ловець",
+  "class.slimearenamod.trapper.desc": "Може ставити _пастки_ клавішою ~ПКМ~.",
+
+  "class.slimearenamod.support": "Підтримка",
+  "class.slimearenamod.support.desc": "#Атака:# дає ефекти _швидкости_\n_та стрибучости_ союзним слаймам\n#Здібність:# випускає промінь у ціль:\nякщо ворог — _сповільнює_, якщо союзник — _пришвидшує_."
 
 }

@@ -58,6 +58,11 @@ public class ThrownHeavyCoreEntity extends ThrownBlockEntity {
         this.move(MovementType.SELF, this.getVelocity());
         this.setVelocity(this.getVelocity().multiply(0.98));
 
+//        if (this.getWorld().isClient) {
+//            Vec3d vec3d = this.getVelocity();
+//            this.getWorld().addParticle(ParticleTypes.END_ROD, this.getX() - vec3d.x, this.getY() - vec3d.y + 0.15, this.getZ() - vec3d.z, 0.0, 0.0, 0.0);
+//        }
+
     }
 
     @Override

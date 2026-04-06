@@ -1,6 +1,6 @@
 package com.spokiy.slimearenamod.world.entity.projectile.blocks;
 
-import com.spokiy.slimearenamod.util.Config;
+import com.spokiy.slimearenamod.config.Config;
 import com.spokiy.slimearenamod.util.Util;
 import com.spokiy.slimearenamod.world.entity.SAEntities;
 import net.minecraft.block.Block;
@@ -67,9 +67,9 @@ public class ThrownHoneyBlockEntity extends ThrownBlockEntity {
             entity.addStatusEffect(Config.HONEY_BLOCK_EFFECT.create());
             this.getWorld().playSound(null,
                     this.getX(), this.getY(), this.getZ(),
-                    SoundEvents.BLOCK_HONEY_BLOCK_SLIDE, SoundCategory.NEUTRAL,
+                    SoundEvents.BLOCK_HONEY_BLOCK_PLACE, SoundCategory.NEUTRAL,
                     0.25F,
-                    Util.randomRange(this.random, 0.85F, 1.15F)
+                    Util.randomRange(this.random, 0.6F, 0.8F)
             );
         }
     }

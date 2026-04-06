@@ -1,8 +1,7 @@
 package com.spokiy.slimearenamod.world.entity;
 
-import com.spokiy.slimearenamod.util.Config;
+import com.spokiy.slimearenamod.config.Config;
 import com.spokiy.slimearenamod.world.item.SAItems;
-import com.spokiy.slimearenamod.util.Util;
 import net.minecraft.entity.*;
 import net.minecraft.entity.vehicle.*;
 import net.minecraft.item.Item;

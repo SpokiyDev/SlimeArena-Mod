@@ -1,10 +1,9 @@
 package com.spokiy.slimearenamod.mixin;
 
-import com.spokiy.slimearenamod.util.Config;
+import com.spokiy.slimearenamod.config.Config;
 import com.spokiy.slimearenamod.util.EffectConfig;
 import com.spokiy.slimearenamod.util.Util;
 import net.minecraft.component.type.PotionContentsComponent;
-import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -32,6 +31,8 @@ public class ItemMixin {
 
     @Inject(method = "use", at = @At("HEAD"), cancellable = true)
     private void onUse(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> cir) {
+        if (user.getCommandTags().isEmpty()) cir.setReturnValue(TypedActionResult.fail(user.getStackInHand(hand)));
+
         Item item = (Item)(Object)this;
         ItemStack stack = user.getStackInHand(hand);
 

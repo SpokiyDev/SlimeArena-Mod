@@ -1,5 +1,6 @@
 package com.spokiy.slimearenamod.util;
 
+import com.spokiy.slimearenamod.config.Config;
 import com.spokiy.slimearenamod.data.PlayerClass;
 import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.scoreboard.Team;
@@ -8,37 +9,29 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
+import java.util.Locale;
 import java.util.Map;
 
 public class NameTagManager {
-    private static final Map<PlayerClass, Formatting> COLORS = Map.of(
-            // Human
-            PlayerClass.HUMAN, Formatting.YELLOW,
-            // Slime
-            PlayerClass.SLIME, Formatting.GREEN,
-            PlayerClass.SPRINTER, Formatting.AQUA,
-            PlayerClass.MAGE, Formatting.LIGHT_PURPLE,
-            PlayerClass.HUNTER, Formatting.RED,
-            PlayerClass.TRAPPER, Formatting.GOLD,
-            PlayerClass.SUPPORT, Formatting.YELLOW
-    );
 
     public static void updatePlayerScoreboardTeam(ServerPlayerEntity player, PlayerClass playerClass) {
         MinecraftServer server = player.getServer();
         if (server == null) return;
         Scoreboard scoreboard = server.getScoreboard();
 
-        String teamName = playerClass.name().toLowerCase();
-        Team team = scoreboard.getTeam(teamName);
+        String className = playerClass.name().toLowerCase();
+        Team team = scoreboard.getTeam(className);
 
         if (team == null) {
-            team = scoreboard.addTeam(teamName);
+            team = scoreboard.addTeam(className);
 
-            team.setPrefix(Text.translatable("class.slimearenamod." + teamName));
+            String name = Text.translatable("class.slimearenamod." + className.toLowerCase()).getString()
+                    .toUpperCase(Locale.ROOT);
+            team.setPrefix(Text.literal("[" + name + "] "));
 
         }
         // Set color
-        Formatting color = COLORS.get(playerClass);
+        Formatting color = Config.CLASS_COLORS.get(playerClass);
         if (color == null) color = Formatting.WHITE;
         team.setColor(color);
 

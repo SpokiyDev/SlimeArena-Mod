@@ -3,7 +3,7 @@ package com.spokiy.slimearenamod.event;
 import com.spokiy.slimearenamod.SlimeArenaMod;
 import com.spokiy.slimearenamod.data.*;
 import com.spokiy.slimearenamod.data.GamePhaseType;
-import com.spokiy.slimearenamod.util.Config;
+import com.spokiy.slimearenamod.config.Config;
 import com.spokiy.slimearenamod.world.item.VaccineItem;
 import com.spokiy.slimearenamod.util.Util;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
@@ -63,28 +63,28 @@ public class SAEvents {
         });
 
         ServerTickEvents.END_SERVER_TICK.register(server -> {
-            tickCounter++;
 
             // Game timer
             WorldData worldData = SAComponents.WORLD_DATA.get(server.getOverworld());
             if (worldData.getGameTimer() > 0) {
                 worldData.setGameTimer(worldData.getGameTimer() - 1);
             } else if (worldData.getGameTimer() == 0) {
-                switch (worldData.getPhase()) {
+                switch (worldData.getCurrentPhase()) {
                     case SLIME:
-                        worldData.setPhase(GamePhaseType.PLAYING);
+                        worldData.setCurrentPhase(GamePhaseType.PLAYING);
 
                         List<ServerPlayerEntity> players = server.getPlayerManager().getPlayerList().stream()
                                 .filter(p -> p.getCommandTags().contains(worldData.getGameTag()))
                                 .toList();
 
                         if (!players.isEmpty()) {
-                            worldData.initGameTimer(WorldData.GAME_PHASES.get(GamePhaseType.PLAYING).maxTimerValue);
+                            worldData.initGameTimer(GamePhaseType.PLAYING);
 
                             ServerPlayerEntity randomPlayer =
                                     players.get(ThreadLocalRandom.current().nextInt(players.size()));
+                            PlayerData playerData = SAComponents.PLAYER_DATA.get(randomPlayer);
 
-                            Util.infectPlayer(randomPlayer);
+                            Util.infectPlayer(randomPlayer, playerData.getSlimeClass());
                             break;
                         } else {
                             server.getPlayerManager().broadcast(
@@ -93,25 +93,18 @@ public class SAEvents {
                         }
 
                     case PLAYING:
-                        SlimeArenaMod.bossBar.setVisible(false);
-                        SlimeArenaMod.bossBar.clearPlayers();
-
-                        worldData.setPhase(GamePhaseType.LOBBY);
-                        worldData.setGameTimer(-1);
-
-                        for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
-                            player.changeGameMode(Config.ARENA_GAMEMODE);
-                            Util.changePlayerClass(player, SAComponents.PLAYER_DATA.get(player), PlayerClass.HUMAN);
-                            player.teleport(server.getOverworld(), 0, -60, 0, player.getYaw(), 0);
-
-                            if (!player.getCommandTags().isEmpty()) {
-                                for (String tag : new HashSet<>(player.getCommandTags())) player.removeCommandTag(tag);
-                            }
-                        }
+                        Util.endGame(server.getOverworld(), worldData, PlayerTeam.HUMAN);
                         break;
                 }
 
             }
+
+            if (tickCounter == 0) {
+                if (Config.DATA.phaseTimes.get(worldData.getCurrentPhase()) == 0) {
+                    SlimeArenaMod.bossBar.setVisible(false);
+                }
+            }
+            tickCounter++;
         });
 
         AttackEntityCallback.EVENT.register(((attacker, world, hand, entity, result) -> {

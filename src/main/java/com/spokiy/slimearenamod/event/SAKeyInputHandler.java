@@ -4,7 +4,7 @@ import com.spokiy.slimearenamod.client.SlimeArenaModClient;
 import com.spokiy.slimearenamod.data.PlayerClass;
 import com.spokiy.slimearenamod.data.SAComponents;
 import com.spokiy.slimearenamod.networking.packet.KeyPressPayload;
-import com.spokiy.slimearenamod.util.Config;
+import com.spokiy.slimearenamod.config.Config;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.network.ClientPlayerEntity;

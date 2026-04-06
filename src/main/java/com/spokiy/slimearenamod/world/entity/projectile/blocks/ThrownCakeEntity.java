@@ -2,7 +2,7 @@ package com.spokiy.slimearenamod.world.entity.projectile.blocks;
 
 import com.spokiy.slimearenamod.data.PlayerTeam;
 import com.spokiy.slimearenamod.data.SAComponents;
-import com.spokiy.slimearenamod.util.Config;
+import com.spokiy.slimearenamod.config.Config;
 import com.spokiy.slimearenamod.util.EffectConfig;
 import com.spokiy.slimearenamod.world.entity.SAEntities;
 import net.minecraft.block.Block;
@@ -13,6 +13,10 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Vec3d;
@@ -63,17 +67,29 @@ public class ThrownCakeEntity extends ThrownBlockEntity {
     protected void onEntityHit(EntityHitResult entityHitResult) {
         super.onEntityHit(entityHitResult);
 
-        if (!this.getWorld().isClient) {
-            if (entityHitResult.getEntity() instanceof LivingEntity target && this.getOwner() instanceof LivingEntity owner) {
-                PlayerTeam targetTeam = SAComponents.PLAYER_DATA.get(target).getPlayerTeam();
-                PlayerTeam ownerTeam = SAComponents.PLAYER_DATA.get(owner).getPlayerTeam();
+        if (entityHitResult.getEntity() instanceof LivingEntity target && this.getOwner() instanceof LivingEntity owner) {
+            for (EffectConfig effect : Config.CAKE_EFFECTS) {
+                if (this.getWorld() instanceof ServerWorld world) {
+                    // Particle
+                    ParticleEffect particleEffect = ParticleTypes.HEART;
 
-                if (targetTeam == ownerTeam) {
-                    for (EffectConfig effect : Config.CAKE_EFFECTS) {
-                        target.addStatusEffect(effect.create());
-                        owner.addStatusEffect(effect.create());
+                    for (int i = 0; i < 4; i++) {
+                        double d = this.random.nextGaussian() * 0.02;
+                        double e = this.random.nextGaussian() * 0.02;
+                        double f = this.random.nextGaussian() * 0.02;
+                        world.spawnParticles(particleEffect, owner.getParticleX(1.0), owner.getRandomBodyY() + 0.25, owner.getParticleZ(1.0), 1, d, e, f, 0f);
+                        world.spawnParticles(particleEffect, target.getParticleX(1.0), target.getRandomBodyY() + 0.25, target.getParticleZ(1.0), 1, d, e, f, 0f);
                     }
 
+                    // Sound
+                    if (owner instanceof ServerPlayerEntity p)
+                        p.playSoundToPlayer(SoundEvents.ENTITY_GENERIC_EAT, SoundCategory.NEUTRAL, 1, 0.8F);
+                    if (target instanceof ServerPlayerEntity p)
+                        p.playSoundToPlayer(SoundEvents.ENTITY_GENERIC_EAT, SoundCategory.NEUTRAL, 1, 0.8F);
+
+                    // Status Effect
+                    owner.addStatusEffect(effect.create());
+                    target.addStatusEffect(effect.create());
                 }
             }
 

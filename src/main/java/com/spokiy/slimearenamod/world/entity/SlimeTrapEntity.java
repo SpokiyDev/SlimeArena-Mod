@@ -2,7 +2,7 @@ package com.spokiy.slimearenamod.world.entity;
 
 import com.spokiy.slimearenamod.data.PlayerTeam;
 import com.spokiy.slimearenamod.data.SAComponents;
-import com.spokiy.slimearenamod.util.Config;
+import com.spokiy.slimearenamod.config.Config;
 import com.spokiy.slimearenamod.util.EffectConfig;
 import com.spokiy.slimearenamod.util.Util;
 import com.spokiy.slimearenamod.world.item.SAItems;

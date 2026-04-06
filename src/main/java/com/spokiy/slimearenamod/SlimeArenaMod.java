@@ -1,17 +1,21 @@
 package com.spokiy.slimearenamod;
 
 import com.spokiy.slimearenamod.util.UseItemUtil;
+import com.spokiy.slimearenamod.config.Config;
+import com.spokiy.slimearenamod.config.ConfigManager;
 import com.spokiy.slimearenamod.world.block.SABlocks;
 import com.spokiy.slimearenamod.world.effect.SAStatusEffects;
 import com.spokiy.slimearenamod.world.entity.SAEntities;
 import com.spokiy.slimearenamod.util.SACommands;
 import com.spokiy.slimearenamod.event.SAEvents;
+import com.spokiy.slimearenamod.world.entity.SlimeTargetEntity;
 import com.spokiy.slimearenamod.world.item.SAItems;
 import com.spokiy.slimearenamod.networking.SAMessages;
 import com.spokiy.slimearenamod.data.item.SAItemDataComponents;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.entity.boss.BossBar;
 import net.minecraft.entity.boss.ServerBossBar;
 import net.minecraft.text.Text;
@@ -26,9 +30,10 @@ public class SlimeArenaMod implements ModInitializer {
 			Text.of("0"), BossBar.Color.WHITE, BossBar.Style.PROGRESS
 	);
 
-
 	@Override
 	public void onInitialize() {
+		Config.DATA = ConfigManager.load();
+
 		SAItems.register();
 		SAItemDataComponents.register();
 		SABlocks.register();
@@ -42,6 +47,8 @@ public class SlimeArenaMod implements ModInitializer {
 		});
 
 		UseItemUtil.initActions();
+
+		FabricDefaultAttributeRegistry.register(SAEntities.SLIME_TARGET, SlimeTargetEntity.createAttributes());
 
 	}
 

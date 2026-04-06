@@ -1,4 +1,4 @@
-package com.spokiy.slimearenamod.util;
+package com.spokiy.slimearenamod.datagen;
 
 import com.spokiy.slimearenamod.SlimeArenaMod;
 import net.minecraft.block.Block;

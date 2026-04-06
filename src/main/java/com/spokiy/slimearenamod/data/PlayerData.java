@@ -10,9 +10,10 @@ import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import java.util.Arrays;
 
 public class PlayerData implements Component, AutoSyncedComponent {
-    long abilityCooldown = 0;
+    private long abilityCooldown = 0;
     private PlayerTeam playerTeam = PlayerTeam.NONE;
     private PlayerClass playerClass = PlayerClass.NONE;
+    private PlayerClass slimeClass = PlayerClass.SLIME;
 
     // Player Team
     public PlayerTeam getPlayerTeam() { return playerTeam; }
@@ -28,6 +29,10 @@ public class PlayerData implements Component, AutoSyncedComponent {
         if (Arrays.asList(Util.SLIME_CLASSES).contains(value)) return PlayerTeam.SLIME;
         return PlayerTeam.HUMAN;
     }
+
+    // Slime Class
+    public PlayerClass getSlimeClass() { return slimeClass; }
+    public void setSlimeClass(PlayerClass slimeClass) { this.slimeClass = slimeClass; }
 
     // Ability Cooldown
     public int getCooldown(long currentTime) { return (int)Math.max(0, abilityCooldown - currentTime); }

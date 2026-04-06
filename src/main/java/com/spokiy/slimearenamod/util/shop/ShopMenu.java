@@ -1,6 +1,7 @@
 package com.spokiy.slimearenamod.util.shop;
 
-import net.minecraft.client.MinecraftClient;
+import com.spokiy.slimearenamod.data.PlayerData;
+import com.spokiy.slimearenamod.data.SAComponents;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -8,7 +9,6 @@ import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.registry.RegistryKeys;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
@@ -20,6 +20,9 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
+import java.util.List;
+import java.util.Objects;
+
 import static com.spokiy.slimearenamod.util.shop.ShopUtil.SHOP_ITEMS;
 
 public class ShopMenu extends ScreenHandler {
@@ -30,23 +33,17 @@ public class ShopMenu extends ScreenHandler {
 
     public ShopMenu(int syncId, PlayerInventory playerInventory, Inventory inventory) {
         super(ScreenHandlerType.GENERIC_9X6, syncId);
-
         checkSize(inventory, ROWS * 9);
-
         this.inventory = inventory;
-
         inventory.onOpen(playerInventory.player);
 
         int i = (ROWS - 4) * 18;
-        playerInventory.player.getWorld().getRegistryManager().get(RegistryKeys.ENCHANTMENT);
 
         // GUI
         for (int j = 0; j < ROWS; j++) {
             for (int k = 0; k < 9; k++) {
-                System.out.println("Category: " + shopCategory);
-                System.out.println("Map: " + SHOP_ITEMS.get(shopCategory));
 
-                ShopUtil.fillShopSlot(inventory, shopCategory, k + j * 9);
+                ShopUtil.fillShopSlot(playerInventory.player, inventory, shopCategory, k + j * 9);
 
                 this.addSlot(new Slot(inventory, k + j * 9, 8 + k * 18, 18 + j * 18) {
                     @Override
@@ -84,7 +81,7 @@ public class ShopMenu extends ScreenHandler {
         player.openHandledScreen(new SimpleNamedScreenHandlerFactory(
                 (syncId, playerInventory, p) ->
                         new ShopMenu(syncId, playerInventory, inventory),
-                Text.translatable("shop.slimearenamod.shop_label")
+                Text.translatable("menu.slimearenamod.shop.label")
         ));
     }
 
@@ -142,7 +139,7 @@ public class ShopMenu extends ScreenHandler {
             else                                         purchases = playerEmeralds >= price ? 1 : 0;
 
             if (purchases <= 0) {
-                player.sendMessage(Text.translatable("shop.slimearenamod.not_enough_money")
+                player.sendMessage(Text.translatable("menu.slimearenamod.shop.not_enough_money")
                         .formatted(Formatting.RED), false);
                 return;
             }
@@ -151,7 +148,7 @@ public class ShopMenu extends ScreenHandler {
             removeItems(player, Items.EMERALD, totalPrice);
 
             int totalItems = purchases * stackSize;
-            ItemStack stack = ShopUtil.prepareShopStack(shopItem, false);
+            ItemStack stack = ShopUtil.prepareShopStack(player, shopItem, false);
             stack.setCount(totalItems);
 
             player.giveItemStack(stack);
@@ -160,6 +157,8 @@ public class ShopMenu extends ScreenHandler {
 
         // SELL
         if (button == 1) {
+            List<String> tags = player.getCommandTags().stream().toList();
+            if (!tags.isEmpty() && !Objects.equals(tags.getFirst(), "training")) return;
 
             int stackSize = shopStack.getCount();
             int totalItems = countItems(player, shopItem.stack());
@@ -169,7 +168,7 @@ public class ShopMenu extends ScreenHandler {
             else                                         sales = totalItems >= stackSize ? 1 : 0;
 
             if (sales <= 0) {
-                player.sendMessage(Text.translatable("shop.slimearenamod.no_item_to_sell")
+                player.sendMessage(Text.translatable("menu.slimearenamod.shop.no_item_to_sell")
                         .formatted(Formatting.RED), false);
                 return;
             }

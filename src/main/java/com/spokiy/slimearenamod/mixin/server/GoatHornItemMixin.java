@@ -1,6 +1,6 @@
 package com.spokiy.slimearenamod.mixin.server;
 
-import com.spokiy.slimearenamod.util.Config;
+import com.spokiy.slimearenamod.config.Config;
 import com.spokiy.slimearenamod.util.Util;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -9,7 +9,6 @@ import net.minecraft.item.GoatHornItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.Vec3d;
@@ -25,7 +24,7 @@ public abstract class GoatHornItemMixin {
 
     @Inject(method = "use", at = @At("RETURN"))
     private void onUse(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> cir) {
-        for (LivingEntity livingEntity : user.getWorld().getEntitiesByClass(LivingEntity.class, user.getBoundingBox().expand(8.0), entity -> entity.isAlive() && entity != user)) {
+        for (LivingEntity livingEntity : user.getWorld().getEntitiesByClass(LivingEntity.class, user.getBoundingBox().expand(8.0), entity -> entity != user)) {
             this.knockBack(user, livingEntity);
         }
 
@@ -53,6 +52,8 @@ public abstract class GoatHornItemMixin {
                  direction.y * verticalStrength / 2 + verticalStrength,
                 direction.z * horizontalStrength
         );
+
+        entity.velocityModified = true;
 
     }
 

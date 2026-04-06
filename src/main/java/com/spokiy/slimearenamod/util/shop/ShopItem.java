@@ -23,7 +23,7 @@ public record ShopItem(
     }
 
     // itemStack + price + lore
-    public static ShopItem create(ItemStack stack, Integer price,List<Text> lore) {
+    public static ShopItem create(ItemStack stack, Integer price, List<Text> lore) {
         return new ShopItem(stack, price, null, lore);
     }
 
@@ -33,7 +33,7 @@ public record ShopItem(
     }
     // item + price + quickLore
     public static ShopItem withQuickLore(int lines, ItemStack stack, Integer price) {
-        return new ShopItem(stack, price, null, Util.quickLore(stack, ShopUtil.getLoreColorByPrice(price), lines));
+        return new ShopItem(stack, price, null, Util.quickLore(stack, ShopUtil.getLoreColorByPrice(price)));
     }
 
     // FULL constructor

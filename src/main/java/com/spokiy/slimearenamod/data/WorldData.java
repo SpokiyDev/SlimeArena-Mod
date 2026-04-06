@@ -1,33 +1,25 @@
 package com.spokiy.slimearenamod.data;
 
 import com.spokiy.slimearenamod.SlimeArenaMod;
-import net.minecraft.entity.boss.BossBar;
+import com.spokiy.slimearenamod.config.Config;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.text.Text;
 import org.ladysnake.cca.api.v3.component.Component;
-import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 
-import java.util.Map;
+public class WorldData implements Component {
+    private int gameTimer = 0;
+    private String gameTag = "";
+    private GamePhaseType currentPhase = GamePhaseType.LOBBY;
 
-public class WorldData implements Component, AutoSyncedComponent {
-    int gameTimer;
-    String gameTag;
+    // Game Phase
+    public GamePhaseType getCurrentPhase() { return currentPhase; }
+    public void setCurrentPhase(GamePhaseType phase) { this.currentPhase = phase; }
 
-    GamePhaseType currentPhase = GamePhaseType.LOBBY;
-    public static Map<GamePhaseType, GamePhase> GAME_PHASES = Map.of(
-        GamePhaseType.LOBBY, GamePhase.empty(),
-        GamePhaseType.SLIME, new GamePhase(5, "", BossBar.Color.GREEN),
-        GamePhaseType.PLAYING, new GamePhase(10, "", BossBar.Color.WHITE)
-    );
-
-
-    public GamePhaseType getPhase() { return currentPhase; }
-    public void setPhase(GamePhaseType phase) { this.currentPhase = phase; }
-
+    // Game Timer
     public int getGameTimer() { return gameTimer; }
-    public void initGameTimer(int value) {
-        setGameTimer(value);
+    public void initGameTimer(GamePhaseType phase) {
+        setGameTimer(Config.DATA.phaseTimes.get(phase) * 20);
     }
     public void setGameTimer(int value) {
         gameTimer = value;
@@ -41,10 +33,11 @@ public class WorldData implements Component, AutoSyncedComponent {
             String time = String.format("%02d:%02d", minutes, seconds);
             if (hours > 0) time = String.format("%02d:%02d:%02d", hours, minutes, seconds);
 
-            GamePhase timer = GAME_PHASES.get(currentPhase);
+            GamePhase phase = Config.GAME_PHASES.get(currentPhase);
+            int maxTimerValue = Config.DATA.phaseTimes.get(currentPhase) * 20;
             SlimeArenaMod.bossBar.setName(Text.of(time));
-            SlimeArenaMod.bossBar.setColor(timer.color);
-            SlimeArenaMod.bossBar.setPercent((float) value / timer.maxTimerValue);
+            SlimeArenaMod.bossBar.setColor(phase.color);
+            SlimeArenaMod.bossBar.setPercent((float) value / maxTimerValue);
         }
 
     }
@@ -54,10 +47,10 @@ public class WorldData implements Component, AutoSyncedComponent {
 
     @Override
     public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-        if (tag.contains("game_phase")) currentPhase = (GamePhaseType.valueOf(tag.getString("game_phase")));
+        if (tag.contains("game_phase"))
+            currentPhase = (GamePhaseType.valueOf(tag.getString("game_phase")));
         gameTimer = tag.getInt("game_timer");
         gameTag = tag.getString("game_tag");
-        if (GAME_PHASES.get(currentPhase).equals(GamePhase.empty())) SlimeArenaMod.bossBar.setVisible(false);
     }
 
     @Override

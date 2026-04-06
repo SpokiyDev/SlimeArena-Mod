@@ -5,7 +5,7 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.spokiy.slimearenamod.data.PlayerData;
 import com.spokiy.slimearenamod.data.SAComponents;
 import com.spokiy.slimearenamod.data.PlayerTeam;
-import com.spokiy.slimearenamod.util.Config;
+import com.spokiy.slimearenamod.config.Config;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -20,7 +20,7 @@ public abstract class LivingEntityMixin {
         if (entity instanceof PlayerEntity player) {
             PlayerData playerData = SAComponents.PLAYER_DATA.get(player);
             if (playerData.getPlayerTeam() == PlayerTeam.SLIME) {
-                return original * Config.SLIME_SWIM_SPEED_MULTIPLIER;
+                return original * Config.DATA.slimeSwimSpeedMultiplier;
             }
         }
 

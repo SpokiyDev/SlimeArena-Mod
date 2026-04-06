@@ -6,6 +6,7 @@ import com.spokiy.slimearenamod.world.entity.projectile.blocks.ThrownBlockEntity
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
 import net.minecraft.client.render.entity.MinecartEntityRenderer;
+import net.minecraft.client.render.entity.SlimeEntityRenderer;
 import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
@@ -24,6 +25,8 @@ public class SAEntityRenderers {
 
     public static void register() {
         SlimeArenaMod.LOGGER.info("Registering Entity Renderers for " + SlimeArenaMod.MOD_ID);
+
+        EntityRendererRegistry.register(SAEntities.SLIME_TARGET, SlimeEntityRenderer::new);
 
         // Humans
         THROWN_ITEMS.forEach(entityType ->

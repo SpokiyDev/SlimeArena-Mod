@@ -4,9 +4,11 @@ import com.spokiy.slimearenamod.util.Util;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.LoreComponent;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -14,8 +16,13 @@ import java.util.*;
 
 public class ShopUtil {
     private static final List<Text> SELL_BUY_TIP = List.of(Text.empty(),
-            Text.translatable("shop.slimearenamod.left_click_to_buy").setStyle(shopStyle(Formatting.GREEN)),
-            Text.translatable("shop.slimearenamod.right_click_to_sell").setStyle(shopStyle(Formatting.RED)));
+            Text.translatable("menu.slimearenamod.shop.left_click_to_buy").setStyle(shopStyle(Formatting.GREEN)),
+            Text.translatable("menu.slimearenamod.shop.right_click_to_sell").setStyle(shopStyle(Formatting.RED))
+    );
+    private static final List<Text> SELL_BUY_TIP2 = List.of(Text.empty(),
+            Text.translatable("menu.slimearenamod.shop.left_click_to_buy").setStyle(shopStyle(Formatting.GREEN)),
+            Text.translatable("menu.slimearenamod.shop.unable_to_sell").setStyle(shopStyle(Formatting.RED))
+    );
 
     private static final ShopItem DECORATIVE_SLOT =
             ShopItem.create(new ItemStack(Items.GRAY_STAINED_GLASS_PANE), null, List.of());
@@ -31,11 +38,11 @@ public class ShopUtil {
         return shopMap;
     }
 
-    public static void fillShopSlot(Inventory inventory, ShopCategory shopCategory, int slotIndex) {
+    public static void fillShopSlot(PlayerEntity player, Inventory inventory, ShopCategory shopCategory, int slotIndex) {
         ShopItem shopItem = SHOP_ITEMS.get(shopCategory).get(slotIndex);
         if (shopItem == null) return;
 
-        ItemStack stack = prepareShopStack(shopItem, true);
+        ItemStack stack = prepareShopStack(player, shopItem, true);
 
         // Add the item to Shop
         inventory.setStack(slotIndex, stack);
@@ -76,21 +83,21 @@ public class ShopUtil {
         map.put(25, ShopItem.withQuickLore(new ItemStack(Items.HEAVY_CORE), 4));
 
         // Row 3
-        map.put(28, ShopItem.create(Util.customPotion(Items.POTION, StatusEffects.JUMP_BOOST, 20 * 20, 1), 1));
-        map.put(29, ShopItem.create(Util.customPotion(Items.POTION, StatusEffects.SPEED, 20 * 15, 1), 2));
-        map.put(30, ShopItem.create(Util.customPotion(Items.POTION, StatusEffects.SLOW_FALLING, 20 * 10, 0), 2));
-        map.put(31, ShopItem.create(Util.customPotion(Items.POTION, StatusEffects.LEVITATION, 20 * 8, 2), 3));
-        map.put(32, ShopItem.create(Util.customPotion(Items.POTION, StatusEffects.INVISIBILITY, 20 * 8, 0, false,
-                List.of(Text.translatable("item.slimearenamod.potion.invisibility.lore"))), 4));
 
         // Row 4
-        map.put(37, ShopItem.withQuickLore(new ItemStack(Items.GOAT_HORN), 6));
+        map.put(37, ShopItem.create(Util.customPotion(Items.POTION, StatusEffects.JUMP_BOOST, 20 * 20, 1), 1));
+        map.put(38, ShopItem.create(Util.customPotion(Items.POTION, StatusEffects.SPEED, 20 * 15, 1), 2));
+        map.put(39, ShopItem.create(Util.customPotion(Items.POTION, StatusEffects.SLOW_FALLING, 20 * 10, 0), 2));
+        map.put(40, ShopItem.create(Util.customPotion(Items.POTION, StatusEffects.LEVITATION, 20 * 8, 2), 3));
+        map.put(41, ShopItem.create(Util.customPotion(Items.POTION, StatusEffects.INVISIBILITY, 20 * 8, 0, false,
+                List.of(Text.translatable("item.slimearenamod.potion.invisibility.desc"))), 4));
+        map.put(43, ShopItem.withQuickLore(new ItemStack(Items.GOAT_HORN), 6));
 
         return map;
     }
 
 
-    public static ItemStack prepareShopStack(ShopItem shopItem, boolean isGUI) {
+    public static ItemStack prepareShopStack(PlayerEntity player, ShopItem shopItem, boolean isGUI) {
         ItemStack stack = shopItem.stack().copy();
 
         // NAME
@@ -115,7 +122,11 @@ public class ShopUtil {
 
         if (shopItem.lore() != null) lore.addAll(shopItem.lore());
         if (loreComp != null) lore.addAll(loreComp.lines());
-        if (isGUI && shopItem.price() != null) lore.addAll(SELL_BUY_TIP);
+        if (isGUI && shopItem.price() != null) {
+            List<String> tags = player.getCommandTags().stream().toList();
+            if (tags.isEmpty() || Objects.equals(tags.getFirst(), "training")) lore.addAll(SELL_BUY_TIP);
+            else lore.addAll(SELL_BUY_TIP2);
+        }
 
         stack.set(DataComponentTypes.LORE, new LoreComponent(lore));
 

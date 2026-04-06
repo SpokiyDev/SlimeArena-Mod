@@ -1,19 +1,45 @@
-package com.spokiy.slimearenamod.util;
+package com.spokiy.slimearenamod.config;
 
+import com.spokiy.slimearenamod.data.GamePhase;
+import com.spokiy.slimearenamod.data.GamePhaseType;
+import com.spokiy.slimearenamod.data.PlayerClass;
+import com.spokiy.slimearenamod.util.EffectConfig;
 import com.spokiy.slimearenamod.world.effect.SAStatusEffects;
-import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.boss.BossBar;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.particle.EntityEffectParticleEffect;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.math.ColorHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameMode;
 
+import java.util.List;
 import java.util.Map;
 
 public class Config {
+    public static ServerConfig DATA;
+
+    public static Vec3d LOBBY_POS = new Vec3d(0, -60, 0);
+    public static Vec3d TRAINING_POS = new Vec3d(500, -60, 0);
+
     public static GameMode ARENA_GAMEMODE = GameMode.ADVENTURE;
-    public static final int EMERALDS_TO_GIVE = 15;
-    public static final float SLIME_SWIM_SPEED_MULTIPLIER = 1.5f;
+    public static Map<GamePhaseType, GamePhase> GAME_PHASES = Map.of(
+            GamePhaseType.LOBBY, GamePhase.empty(),
+            GamePhaseType.SLIME, new GamePhase("", BossBar.Color.GREEN),
+            GamePhaseType.PLAYING, new GamePhase("", BossBar.Color.WHITE)
+    );
+    public static final Map<PlayerClass, Formatting> CLASS_COLORS = Map.of(
+            // Human
+            PlayerClass.HUMAN, Formatting.YELLOW,
+            // Slime
+            PlayerClass.SLIME, Formatting.GREEN,
+            PlayerClass.SPRINTER, Formatting.AQUA,
+            PlayerClass.MAGE, Formatting.LIGHT_PURPLE,
+            PlayerClass.HUNTER, Formatting.RED,
+            PlayerClass.TRAPPER, Formatting.GOLD,
+            PlayerClass.SUPPORT, Formatting.YELLOW
+    );
 
     // Humans
     // Throwables
@@ -35,8 +61,8 @@ public class Config {
             new EffectConfig(StatusEffects.BLINDNESS, 5, 0, false, true, true);
 
     public static final EffectConfig[] CAKE_EFFECTS = {
-            new EffectConfig(StatusEffects.SPEED, 8, 3, false, true, true),
-            new EffectConfig(StatusEffects.JUMP_BOOST, 8, 1, false, true, true),
+            new EffectConfig(StatusEffects.SPEED, 6, 3, false, true, true),
+            new EffectConfig(StatusEffects.JUMP_BOOST, 6, 1, false, true, true),
     };
 
     // Consumables
@@ -47,8 +73,8 @@ public class Config {
 
     // Slimes
     public static final int SPRINTER_ABILITY_COOLDOWN = 15;
-    public static final int SPRINTER_SPEED_EFFECT_DURATION = 5;
-    public static final int SPRINTER_SPEED_EFFECT_AMPLIFIER = 1;
+    public static final EffectConfig SPRINTER_SPEED_EFFECT =
+            new EffectConfig(StatusEffects.SPEED, 5, 1, false, true, true);
     public static final double SPRINTER_DASH_STRENGTH = 1.1D;
 
     public static final int MAGE_ABILITY_COOLDOWN = 15;
@@ -56,10 +82,13 @@ public class Config {
 
     public static final int HUNTER_ABILITY_COOLDOWN = 30;
     public static final double HUNTER_ABILITY_RADIUS = 16D;
-    public static final EffectConfig HUNTER_ABILITY_EFFECT =
-            new EffectConfig(StatusEffects.GLOWING, 8, 0, true,false,true);
-    public static final EffectConfig HUNTER_ABILITY_BUFF =
-            new EffectConfig(StatusEffects.INVISIBILITY, 5, 0, true,false,true);
+    public static final EffectConfig[] HUNTER_ABILITY_EFFECTS = {
+            new EffectConfig(StatusEffects.GLOWING, 8, 0, false, false, true)
+    };
+    public static final EffectConfig[] HUNTER_ABILITY_BUFFS = {
+            new EffectConfig(StatusEffects.INVISIBILITY, 5, 0, false, false, true),
+            new EffectConfig(StatusEffects.SPEED, 5, 0, false, false, true)
+    };
 
     public static final int TRAPPER_ABILITY_COOLDOWN = 5;
     public static final int TRAPPER_PLACE_TRAP_COOLDOWN = 2;

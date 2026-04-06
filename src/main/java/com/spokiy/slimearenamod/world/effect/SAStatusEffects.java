@@ -10,9 +10,20 @@ import net.minecraft.registry.Registry;
 import net.minecraft.registry.entry.RegistryEntry;
 
 public class SAStatusEffects {
+    public static final RegistryEntry<StatusEffect> SLIME_TEAM = registerStatusEffect("slime_team",
+            new SAStatusEffect(StatusEffectCategory.NEUTRAL, 0x8cd782)
+                    .addAttributeModifier(
+                            EntityAttributes.GENERIC_FALL_DAMAGE_MULTIPLIER, SlimeArenaMod.prefix("effect.slime_team.fall_damage"),
+                            -1.0F, EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL
+                    )
+                    .addAttributeModifier(
+                            EntityAttributes.GENERIC_JUMP_STRENGTH, SlimeArenaMod.prefix("effect.slime_team.jump"),
+                            0.15F, EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL
+                    ));
+
 
     public static final RegistryEntry<StatusEffect> STICKINESS = registerStatusEffect("stickiness",
-            new StickinessEffect(StatusEffectCategory.HARMFUL, 0xf7a519)
+            new SAStatusEffect(StatusEffectCategory.HARMFUL, 0xf7a519)
                     .addAttributeModifier(
                             EntityAttributes.GENERIC_MOVEMENT_SPEED, SlimeArenaMod.prefix("effect.stickiness.speed"),
                             -0.125F, EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL
@@ -23,14 +34,14 @@ public class SAStatusEffects {
                     ));
 
     public static final RegistryEntry<StatusEffect> GIGANTISM = registerStatusEffect("gigantism",
-            new StickinessEffect(StatusEffectCategory.HARMFUL, 0xaade9b)
+            new SAStatusEffect(StatusEffectCategory.HARMFUL, 0xaade9b)
                     .addAttributeModifier(
                             EntityAttributes.GENERIC_STEP_HEIGHT, SlimeArenaMod.prefix("effect.gigantism.scale"),
                             0.25F, EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL
                     ));
 
     public static final RegistryEntry<StatusEffect> GRAVITY = registerStatusEffect("gravity",
-            new StickinessEffect(StatusEffectCategory.HARMFUL, 0x737373)
+            new SAStatusEffect(StatusEffectCategory.HARMFUL, 0x737373)
                     .addAttributeModifier(
                             EntityAttributes.GENERIC_GRAVITY, SlimeArenaMod.prefix("effect.gravity"),
                             0.25F, EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL

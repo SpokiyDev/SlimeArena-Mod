@@ -1,5 +1,6 @@
 package com.spokiy.slimearenamod.util;
 
+import com.spokiy.slimearenamod.config.Config;
 import com.spokiy.slimearenamod.world.entity.projectile.*;
 import com.spokiy.slimearenamod.world.entity.projectile.blocks.*;
 import net.minecraft.component.DataComponentTypes;
@@ -112,27 +113,28 @@ public class UseItemUtil {
 
     public static void echoShard(World world, PlayerEntity user, ItemStack stack) {
         if (world instanceof ServerWorld serverWorld && user instanceof ServerPlayerEntity player) {
+            Vec3d pos = player.getPos();
             Vec3d start = player.getEyePos();
             Vec3d direction = player.getRotationVec(1.0F).normalize();
 
             // Visuals
             for (int i = 1; i <= Config.ECHO_SHARD_SONIC_BOOM_RANGE; i += 2) {
-                Vec3d pos = start.add(direction.multiply(i));
-                serverWorld.spawnParticles(ParticleTypes.SONIC_BOOM, pos.x, pos.y, pos.z, 1, 0, 0, 0, 0);
+                Vec3d pos_ = start.add(direction.multiply(i));
+                serverWorld.spawnParticles(ParticleTypes.SONIC_BOOM, pos_.x, pos_.y, pos_.z, 1, 0, 0, 0, 0);
             }
 
-            serverWorld.playSound(null, start.x, start.y, start.z, SoundEvents.ENTITY_WARDEN_SONIC_CHARGE, SoundCategory.NEUTRAL, 3.0F, 1.0F);
+            serverWorld.playSound(null, pos.x, pos.y, pos.z, SoundEvents.ENTITY_WARDEN_SONIC_CHARGE, SoundCategory.NEUTRAL, 0.5F, 1.0F);
 
 
             double width = Config.ECHO_SHARD_SONIC_BOOM_HITBOX_WIDTH;
 
             Set<LivingEntity> targets = new HashSet<>();
             for (double i = 0; i <= Config.ECHO_SHARD_SONIC_BOOM_RANGE; i += Config.ECHO_SHARD_SONIC_BOOM_HITBOX_STEP) {
-                Vec3d pos = start.add(direction.multiply(i));
+                Vec3d pos_ = start.add(direction.multiply(i));
 
                 Box box = new Box(
-                        pos.x - width, pos.y - width, pos.z - width,
-                        pos.x + width, pos.y + width, pos.z + width
+                        pos_.x - width, pos_.y - width, pos_.z - width,
+                        pos_.x + width, pos_.y + width, pos_.z + width
                 );
                 List<LivingEntity> entities = serverWorld.getEntitiesByClass(
                         LivingEntity.class, box,
@@ -153,6 +155,8 @@ public class UseItemUtil {
                         direction.x * knMultiXZ,
                         direction.y * knMultiY + knY,
                         direction.z * knMultiXZ);
+
+                target.velocityModified = true;
             }
 
         }
@@ -160,7 +164,7 @@ public class UseItemUtil {
 
     public static void honeyBlock(World world, PlayerEntity user, ItemStack stack) {
         world.playSound(null, user.getX(), user.getY(), user.getZ(),
-                SoundEvents.ENTITY_SNOWBALL_THROW, SoundCategory.NEUTRAL,
+                SoundEvents.BLOCK_HONEY_BLOCK_PLACE, SoundCategory.NEUTRAL,
                 0.5F,
                 0.4F / (world.getRandom().nextFloat() * 0.4F + 0.4F)
         );
@@ -173,6 +177,13 @@ public class UseItemUtil {
     }
 
     public static void tnt(World world, PlayerEntity user, ItemStack stack) {
+
+        world.playSound(null, user.getX(), user.getY(), user.getZ(),
+                SoundEvents.ENTITY_SNOWBALL_THROW, SoundCategory.NEUTRAL,
+                0.5F,
+                0.4F / (world.getRandom().nextFloat() * 0.4F + 0.8F)
+        );
+
         if (!world.isClient) {
             Vec3d pos = user.getEyePos();
             TntEntity projectile = new TntEntity(world, pos.x, pos.y, pos.z, user);
@@ -223,7 +234,7 @@ public class UseItemUtil {
 
             if (!world.isClient) {
                 ThrownPumpkinEntity projectile = new ThrownPumpkinEntity(world, user);
-                projectile.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 1.2F, 0.0F);
+                projectile.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 1.2F, 1.0F);
                 world.spawnEntity(projectile);
             }
         }

@@ -1,6 +1,6 @@
 package com.spokiy.slimearenamod.world.entity.projectile.blocks;
 
-import com.spokiy.slimearenamod.util.Config;
+import com.spokiy.slimearenamod.config.Config;
 import com.spokiy.slimearenamod.util.EntityTickTimers;
 import com.spokiy.slimearenamod.world.entity.SAEntities;
 import net.minecraft.block.Block;
@@ -8,14 +8,16 @@ import net.minecraft.block.Blocks;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.*;
-import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.world.World;
@@ -71,6 +73,10 @@ public class ThrownPumpkinEntity extends ThrownBlockEntity {
 
         if (this.getWorld() instanceof ServerWorld world) {
             if (entityHitResult.getEntity() instanceof LivingEntity entity) {
+                if (entity instanceof ServerPlayerEntity player){
+                    player.playSoundToPlayer(SoundEvents.ITEM_ARMOR_EQUIP_GENERIC.value(), SoundCategory.NEUTRAL, 1, 2);
+                }
+
                 if (!entity.getEquippedStack(EquipmentSlot.HEAD).isOf(BLOCK_TYPE.asItem())) {
                     ItemStack stack = new ItemStack(BLOCK_TYPE);
 
